@@ -1,0 +1,1 @@
+java -classpath "james-server-jpa-guice.jar;james-server-jpa-guice.lib/*;james-server-jpa-guice.lib" -javaagent:james-server-jpa-guice.lib/openjpa-3.0.0.jar -Dlogback.configurationFile=conf/logback.xml -Dworking.directory=. org.apache.james.JPAJamesServerMain

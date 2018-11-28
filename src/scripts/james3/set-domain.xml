@@ -1,0 +1,43 @@
+<project name="set-domain" default="default" basedir=".">
+	<description>
+	    Set the domain for Direct
+	</description>
+	
+	<!-- set global properties for this build -->
+	<property environment="env" />
+	<property name="james.dir" value="." />
+	<property name="set.domain-domainlist.stylesheet" value="${james.dir}/set-domain-domainlist.xsl" />
+	<property name="james.domainlist" value="${james.dir}/conf/domainlist.xml" />
+	<property name="james.domainlist-new" value="${james.dir}/conf/domainlist-new.xml" />
+	<property name="set.domain-mailetcontainer.stylesheet" value="${james.dir}/set-domain-mailetcontainer.xsl" />
+	<property name="james.mailetcontainer" value="${james.dir}/conf/mailetcontainer.xml" />
+	<property name="james.mailetcontainer-new" value="${james.dir}/conf/mailetcontainer-new.xml" />
+	
+	<!-- Fail if we can't find DIRECT_DOMAIN -->
+	<target name="fail-if-direct-domain-missing" unless="env.DIRECT_DOMAIN">
+		<fail message="DIRECT_DOMAIN is not defined in the environment"></fail>
+	</target>
+
+	<!-- Initialization -->
+	<target name="init" depends="fail-if-direct-domain-missing">
+	    <tstamp></tstamp>
+ 	</target>
+
+	<!-- Set the domain -->
+	<target name="default" depends="init">
+	    <!-- Edit the domain list file -->
+		<xslt style="${set.domain-domainlist.stylesheet}" in="${james.domainlist}" out="${james.domainlist-new}">
+		    <param name="domain" expression="${env.DIRECT_DOMAIN}"></param>
+		</xslt>
+		<copy file="${james.domainlist-new}" tofile="${james.domainlist}" overwrite="true"></copy>
+		<delete file="${james.domainlist-new}" failonerror="false"></delete>	
+	    
+	    <!-- Edit the mailet container file -->
+		<xslt style="${set.domain-mailetcontainer.stylesheet}" in="${james.mailetcontainer}" out="${james.mailetcontainer-new}">
+		    <param name="domain" expression="${env.DIRECT_DOMAIN}"></param>
+		</xslt>
+		<copy file="${james.mailetcontainer-new}" tofile="${james.mailetcontainer}" overwrite="true"></copy>
+		<delete file="${james.mailetcontainer-new}" failonerror="false"></delete>				
+	</target>
+
+</project>

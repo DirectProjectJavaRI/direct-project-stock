@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+        <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+                <resetJUL>true</resetJUL>
+        </contextListener>
+
+	    <!--  Appenders for console and logs -->
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} %highlight([%-5level]) %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+        </appender>
+
+        <appender name="JAMES" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/james.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/james.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>
+
+        <appender name="MAILBOXMANAGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/mailboxmanager.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/mailboxmanager.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>
+
+        <appender name="IMAPSERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/imapserver.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/imapserver.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>
+
+        <appender name="MAILETCONTAINER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/mailetcontainer.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/mailetcontainer.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>
+        
+        <appender name="DNSSERVICE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/dnsservice.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/dnsservice.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>   
+        
+        <appender name="POP3SERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/pop3server.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/pop3server.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>  
+        
+        <appender name="SMTPSERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/smtpserver.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/smtpserver.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>                           
+
+        <appender name="MAILREPOSITORYSTORE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/mailrepositorystore.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/mailrepositorystore.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>    
+
+        <appender name="USERSREPOSITORY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/userrepositorystore.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/userrepositorystore.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>   
+
+        <appender name="FETCHMAIL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/fetchmail.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                        <immediateFlush>false</immediateFlush>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/fetchmail.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>  
+
+        <!-- Package based loggers -->
+
+        <logger name="org.apache.james.mailboxmanager" level="INFO">
+            <appender-ref ref="MAILBOXMANAGER" />
+        </logger>
+
+        <logger name="org.apache.james.imapserver" level="INFO">
+            <appender-ref ref="IMAPSERVER" />
+        </logger>
+
+        <logger name="org.apache.james.mailetcontainer" level="INFO">
+            <appender-ref ref="MAILETCONTAINER" />
+        </logger>
+
+        <logger name="org.apache.james.mailetcontext" level="INFO">
+            <appender-ref ref="MAILETCONTAINER" />
+        </logger>
+
+        <logger name="org.apache.james.mailspooler" level="INFO">
+            <appender-ref ref="MAILETCONTAINER" />
+        </logger>
+        
+        <logger name="org.apache.james.mailprocessor" level="INFO">
+            <appender-ref ref="MAILETCONTAINER" />
+        </logger>        
+
+        <logger name="org.apache.james.dnsservice" level="INFO">
+            <appender-ref ref="DNSSERVICE" />
+        </logger> 
+
+        <logger name="org.apache.james.pop3server" level="INFO">
+            <appender-ref ref="POP3SERVER" />
+        </logger> 
+
+        <logger name="org.apache.james.smtpserver" level="INFO">
+            <appender-ref ref="SMTPSERVER" />
+        </logger> 
+
+        <logger name="org.apache.james.mailrepositorystore" level="INFO">
+            <appender-ref ref="MAILREPOSITORYSTORE" />
+        </logger> 
+
+        <logger name="org.apache.james.usersrepository" level="INFO">
+            <appender-ref ref="USERSREPOSITORY" />
+        </logger> 
+
+        <logger name="org.apache.james.fetchmail" level="INFO">
+            <appender-ref ref="FETCHMAIL" />
+        </logger> 
+
+        <root level="INFO">
+                <appender-ref ref="CONSOLE" />
+                <appender-ref ref="JAMES"/>
+        </root>
+
+</configuration>

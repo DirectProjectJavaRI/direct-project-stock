@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+        <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+                <resetJUL>true</resetJUL>
+        </contextListener>
+
+	    <!--  Appenders for console and logs -->
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} %highlight([%-5level]) %logger{15} - %msg%n%rEx</pattern>
+                </encoder>
+        </appender>
+
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>./logs/dns-server.log</file>
+                <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+                </encoder>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">       
+                   <fileNamePattern>./logs/dns-server.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+                   <maxHistory>30</maxHistory>
+                </rollingPolicy>
+        </appender>
+
+
+        <root level="INFO">
+                <appender-ref ref="CONSOLE" />
+                <appender-ref ref="LOG_FILE"/>
+        </root>
+
+</configuration>

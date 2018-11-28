@@ -1,0 +1,1 @@
+java -Dworking.directory=. -Dlogging.config=file:conf/logback.xml -jar dns-sboot.jar

@@ -1,0 +1,1 @@
+java -Dworking.directory=. -Dlogging.config=file:conf/logback.xml -jar config-manager.jar $1 $2 $3 $4 $5 $6 $7

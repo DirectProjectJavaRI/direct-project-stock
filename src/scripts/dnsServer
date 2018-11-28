@@ -1,0 +1,33 @@
+#/bin/sh
+case "$1" in
+    start)
+        echo Starting Direct DNS Server
+        nohup java -Dworking.directory=. -Dlogging.config=file:conf/logback.xml -jar dns-sboot.jar > /dev/null 2>&1  &
+        echo $! > ./pid
+        echo "."
+        ;;
+    stop)
+        echo Stopping Direct DNS Server
+        kill $(cat ./pid)
+        rm ./pid
+        echo "."
+        ;;
+    restart)
+        echo Stopping Direct DNS Server
+        kill $(cat ./pid)
+        rm ./pid
+        echo "."
+        echo Starting Direct DNS Server
+        nohup java -Dworking.directory=. -Dlogging.config=file:conf/logback.xml -jar dns-sboot.jar > /dev/null 2>&1  &
+        echo $! > ./pid
+        echo "."
+        ;;
+    console)
+        echo Starting Direct DNS Server
+        java -Dworking.directory=. -Dlogging.config=file:conf/logback.xml -jar dns-sboot.jar
+        ;;
+      *)
+        echo "Usage: dnsServer start|stop|restart|console"
+        exit 1
+        ;;
+esac

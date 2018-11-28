@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one   
+  or more contributor license agreements.  See the NOTICE file 
+  distributed with this work for additional information        
+  regarding copyright ownership.  The ASF licenses this file   
+  to you under the Apache License, Version 2.0 (the            
+  "License"); you may not use this file except in compliance   
+  with the License.  You may obtain a copy of the License at   
+                                                               
+    http://www.apache.org/licenses/LICENSE-2.0                 
+                                                               
+  Unless required by applicable law or agreed to in writing,   
+  software distributed under the License is distributed on an  
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY       
+  KIND, either express or implied.  See the License for the    
+  specific language governing permissions and limitations      
+  under the License.                                           
+ -->
+
+<!--
+   This template file can be used as example for James Server configuration
+   DO NOT USE IT AS SUCH AND ADAPT IT TO YOUR NEEDS
+-->
+ 
+<!-- See http://james.apache.org/server/3/config.html for usage -->
+
+<!-- This block is responsible for processing messages on the spool. -->
+
+<mailetcontainer enableJmx="true">
+ 
+    <!-- MailAddress used for PostMaster -->
+	<context>
+	    <postmaster>postmaster@localhost</postmaster>
+	</context>
+
+    <!-- Number of spool threads -->
+    <spooler>
+	  <threads>20</threads>
+	</spooler>
+      
+  <processors>
+  
+    <processor state="root" enableJmx="true">
+            <mailet match="All" class="PostmasterAlias"/>
+            <mailet match="RelayLimit=30" class="Null"/>
+            <mailet match="All" class="ToProcessor">
+                <processor>transport</processor>
+            </mailet>
+    </processor>
+    
+	<processor state="error" enableJmx="true">
+            <mailet match="All" class="MetricsMailet">
+                <metricName>mailetContainerErrors</metricName>
+            </mailet>
+            <mailet match="All" class="Bounce"/>
+            <mailet match="All" class="ToRepository">
+                <repositoryPath>file://var/mail/error/</repositoryPath>
+            </mailet>
+    </processor>
+
+    <!-- Processor CONFIGURATION SAMPLE: transport is a sample custom processor for local or -->
+    <!-- remote delivery -->
+    <processor state="transport" enableJmx="true">
+
+        <matcher name="relay-allowed" match="org.apache.james.mailetcontainer.impl.matchers.Or">
+            <matcher match="SMTPAuthSuccessful"/>
+            <matcher match="SMTPIsAuthNetwork"/>
+            <matcher match="SentByMailet"/>
+        </matcher>
+        <mailet match="All" class="RemoveMimeHeader">
+            <name>bcc</name>
+            <onMailetException>ignore</onMailetException>
+        </mailet>
+          
+         <mailet match="org.nhind.james.matcher.RecipientIsXdAndNotSMIME" class="org.nhind.james.mailet.DirectXdMailet">
+            <EndpointURL>http://localhost:8080/xd/services/DocumentRepository_Service</EndpointURL>
+         </mailet>
+
+         <mailet match="org.nhindirect.gateway.smtp.james.matcher.RecipAndSenderIsNotLocal=mydomain.com" class="org.nhindirect.gateway.smtp.james.mailet.NHINDSecurityAndTrustMailet">
+            <AutoDSNFailueCreation>General,ReliableAndTimely</AutoDSNFailueCreation> 
+            <!--  The following sections are for configuration of a PKCS11 security token.  This provides a higher level of
+            private key protection where the private key is never in a decrypted form in the STA process memory space.  Instead
+            the key is retrieved from configuration service in a "wrapped" form and unwrapped on the security token using the 
+            "PrivateKeyPassPhraseAlias" systemtric which is also stored in the security token.-
+            
+            Each security token will most likely have its own configuration settings, so consult your token documentation for specifics.
+            -->
+                
+            <!-- 
+            The example below is for a token that utilizes the sun.security.pkcs11.SunPKCS11 security provider.  Specifically, this configuration
+            is tested against a SafeNet eToken pro device.  The specific configuration information is store in an external file name 
+            pkcs11.cfg.  NOTE: The eTokenPro does not support RSA private key wrapping, so it is not an
+            appropriate security token for production use; this is configuration is an example only.
+             -->    
+            <!-- 
+            <KeystoreManagerProvider>org.nhindirect.gateway.smtp.provider.StaticPKCS11TokenKeyStoreProtectionManagerProvider</KeystoreManagerProvider>
+            <KeystoreManagerPin>key$toreP!n</KeystoreManagerPin>
+            <PrivateKeyPassPhraseAlias>privateKeyWrapperSecret</PrivateKeyPassPhraseAlias>
+            <JCE_SENTITIVE_PROVIDER>SunPKCS11-SafeNeteTokenPro</JCE_SENTITIVE_PROVIDER>             
+            <KeystoreManagerStoreType>PKCS11</KeystoreManagerStoreType>
+            <KeystoreManagerPKCS11Provider>sun.security.pkcs11.SunPKCS11</KeystoreManagerPKCS11Provider>
+            <KeystoreManagerPKCS11ConfigFile>properties/pkcs11.cfg</KeystoreManagerPKCS11ConfigFile>
+             -->    
+            
+            <!-- 
+            The example below is for a token that utilizes a custom PKCS11 provider.  Specifically, this configuration
+            is tested against a SafeNet LunaSA device.  The custom configuration information is provided in the KeystoreManagerPKCS11ProviderCustomConfigString
+            setting, but could be placed in a external file using the KeystoreManagerPKCS11ProviderCustomConfigFile setting. 
+             -->    
+            <!-- 
+            <KeystoreManagerProvider>org.nhindirect.gateway.smtp.provider.StaticPKCS11TokenKeyStoreProtectionManagerProvider</KeystoreManagerProvider>
+            <KeystoreManagerPin>key$toreP!n</KeystoreManagerPin>
+            <PrivateKeyPassPhraseAlias>privateKeyWrapperSecret</PrivateKeyPassPhraseAlias>
+            <JCE_SENTITIVE_PROVIDER>LunaProvider</JCE_SENTITIVE_PROVIDER>              
+            <KeystoreManagerStoreType>LUNA</KeystoreManagerStoreType>
+            <KeystoreManagerPKCS11Provider>com.safenetinc.luna.provider.LunaProvider</KeystoreManagerPKCS11Provider>
+            <KeystoreManagerPKCS11ProviderCustomConfigString>slot:0</KeystoreManagerPKCS11ProviderCustomConfigString>
+             -->                                 
+         </mailet>
+
+         <!-- This mailet tracks all incoming notification messages.  All messages at this point should not encrypted, so they
+         should be incoming in direction.  In addtion this mailet determines if a notification should be suppressed from being 
+         delivered to the edge client.  Generally this applies to duplicate notification checking of messages that were sent with 
+         the timely and reliable disposition option, but implementations can vary by HISP.  The default configuration defers to 
+         the message monitoring service to dictate if messages should be supresses. -->
+         <mailet match="org.nhindirect.gateway.smtp.james.matcher.IsNotification" class="org.nhindirect.gateway.smtp.james.mailet.SuppressAndTrackAggregate">
+            <ConsumeMDNProcessed>true</ConsumeMDNProcessed>            
+         </mailet>
+
+         <mailet match="org.nhind.james.matcher.RecipientIsXdAndNotSMIME" class="org.nhind.james.mailet.DirectXdMailet">
+            <EndpointURL>http://localhost:8080/xd/services/DocumentRepository_Service</EndpointURL>
+         </mailet>
+
+         <!-- Is the recipient is for a local account, deliver it locally -->
+         <mailet match="RecipientIsLocal" class="org.nhindirect.gateway.smtp.james.mailet.TimelyAndReliableLocalDelivery"/>
+
+       <!-- If the host is handled by this server and it did not get -->
+       <!-- locally delivered, this is an invalid recipient -->
+       <mailet match="HostIsLocal" class="ToProcessor">
+          <processor>local-address-error</processor>
+          <notice>550 - Requested action not taken: no such user here</notice>
+       </mailet>
+
+
+       <!-- Attempt remote delivery using the specified repository for the spool, -->
+       <!-- using delay time to retry delivery and the maximum number of retries -->
+       <mailet match="All" class="RemoteDelivery">
+          <outgoingQueue>outgoing</outgoingQueue>
+
+          <!-- Delivery Schedule based upon RFC 2821, 4.5.4.1 -->
+          <!-- 5 day retry period, with 4 attempts in the first
+                 hour, two more within the first 6 hours, and then
+                 every 6 hours for the rest of the period. -->
+          <delayTime>5 minutes</delayTime>
+          <delayTime>10 minutes</delayTime>
+          <delayTime>45 minutes</delayTime>
+          <delayTime>2 hours</delayTime>
+          <delayTime>3 hours</delayTime>
+          <delayTime>6 hours</delayTime>
+          <maxRetries>25</maxRetries>
+            
+          <!-- The max reties which will used if no A or MX record for the domain was found. -->
+          <!-- If 0 it will fail on first time -->
+          <maxDnsProblemRetries>0</maxDnsProblemRetries>
+
+          <!-- The number of threads that should be trying to deliver outgoing messages -->
+          <deliveryThreads>10</deliveryThreads>
+
+          <!-- If false the message will not be sent to given server if any recipients fail -->
+          <sendpartial>true</sendpartial>
+            
+          <!-- By default we send bounces to the "bounce" processor -->
+          <!-- By removing this configuration James will fallback to hardcoded bounce -->
+          <!-- notifications -->
+          <bounceProcessor>bounces</bounceProcessor>
+
+          <!-- A single mail server to deliver all outgoing messages. -->
+          <!-- This is useful if this server is a backup or failover machine, -->
+          <!-- or if you want all messages to be routed through a particular mail server, -->
+          <!-- regardless of the email addresses specified in the message -->
+          <!-- -->
+          <!-- The gateway element specifies the gateway SMTP server name. -->
+          <!-- If your gateway mail server is listening on a port other than 25, -->
+          <!-- you can set James to connect to it on that port using the gatewayPort -->
+          <!-- element. -->
+          <!-- Although normally multiple addresses are implemented through proper -->
+          <!-- DNS configuration, the RemoteDelivery mail does allow specifying -->
+          <!-- multiple gateway elements, each of which may also have a port -->
+          <!-- e.g., mygateway:2525 -->
+          <!-- the gatewayPort element is used as a default -->
+          <!--
+            <gateway> otherserver.mydomain.com </gateway>
+            <gatewayPort>25</gatewayPort>
+          -->
+          <!-- If the gateway requires smtp authentication the following directives -->
+          <!-- (gatewayUsername/gatewayPassword) can be used. -->
+          <!--
+          <gatewayUsername>login</gatewayUsername>
+          <gatewayPassword>pass</gatewayPassword>
+            -->
+            
+          <!-- Set the HELO/EHLO name to use when connectiong to remote SMTP-Server -->
+          <!--
+          <mail.smtp.localhost>myMailServer</mail.smtp.localhost>
+            -->
+       </mailet>
+
+    </processor>
+
+    <!-- Processor CONFIGURATION SAMPLE: spam is a sample custom processor for handling -->
+    <!-- spam. -->
+    <!-- You can either log these, bounce these, or just ignore them. -->
+    <processor state="spam" enableJmx="true">
+     
+       <!-- To place the spam messages in the user junk folder, uncomment this matcher/mailet configuration -->
+       <!--
+	   <mailet match="RecipientIsLocal" class="ToRecipientFolder">
+	       <folder>Junk</folder>
+	       <consume>false</consume>
+	   </mailet>
+	    -->
+
+       <!-- To destroy all messages, uncomment this matcher/mailet configuration -->
+       <!--
+       <mailet match="All" class="Null"/>
+         -->
+
+       <!-- To notify the sender their message was marked as spam, uncomment this matcher/mailet configuration -->
+       <!--
+       <mailet match="All" class="Bounce"/>
+         -->
+
+       <!-- To notify the postmaster that a message was marked as spam, uncomment this matcher/mailet configuration -->
+       <!--
+       <mailet match="All" class="NotifyPostmaster"/>
+         -->
+
+       <!-- To log the message to a repository, this matcher/mailet configuration should be uncommented. -->
+       <!-- This is the default configuration. -->
+       <mailet match="All" class="ToRepository">
+          <repositoryPath>file://var/mail/spam/</repositoryPath>
+
+          <!-- Changing the repositoryPath, as in this commented out example, will -->
+          <!-- cause the mails to be stored in a database repository.  -->
+          <!-- Please note that only one repositoryPath element can be present for the mailet -->
+          <!-- configuration. -->
+          <!--
+          <repositoryPath>db://maildb/deadletter/spam</repositoryPath>
+            -->
+       </mailet>
+    </processor>
+
+    <!-- messages containing viruses. -->
+    <processor state="virus" enableJmx="true">
+      
+       <!-- To avoid a loop while bouncing -->
+       <mailet match="All" class="SetMailAttribute">
+          <org.apache.james.infected>true, bouncing</org.apache.james.infected>
+       </mailet>
+
+       <!-- If the sender is authenticated, notify the infection -->
+       <mailet match="SMTPAuthSuccessful" class="Bounce">
+          <inline>heads</inline>
+          <attachment>none</attachment>
+          <notice>Warning: We were unable to deliver the message below because it was found infected by virus(es).</notice>
+       </mailet>
+
+       <!-- In any other situation ghost it, -->
+       <!-- as viruses almost always spoof the sender's address -->
+       <mailet match="All" class="Null" />
+    </processor>
+
+    <!-- This processor handles messages that are for local domains, where the user is unknown -->
+    <processor state="local-address-error" enableJmx="true">
+       <!-- To avoid bouncing/archiving spam, uncomment this matcher/mailet configuration -->
+       <!--
+       <mailet match="HasMailAttribute=isSpam" class="Null" onMatchException="noMatch"/>
+         -->
+
+       <!-- Creates a bounce message using the direct project bounce message generator -->
+	   <mailet match="All" class="org.nhindirect.gateway.smtp.james.mailet.DirectBounce"/>
+
+       <!-- To notify the sender the address was invalid, uncomment this matcher/mailet configuration -->
+       <!-- The original message is not attached to keep the bounce processor from deliverying spam -->
+       <!--
+       <mailet match="All" class="Bounce">
+          <attachment>none</attachment>
+       </mailet>
+         -->
+
+       <!-- To notify the postmaster that a message had an invalid address, uncomment this matcher/mailet configuration -->
+       <!--
+       <mailet match="All" class="NotifyPostmaster"/>
+         -->
+       
+	   <!-- 
+         <mailet match="All" class="ToRepository">
+            <repositoryPath> file://var/mail/address-error/</repositoryPath>
+            <repositoryPath> db://maildb/deadletter/address-error </repositoryPath>
+         </mailet>
+       --> 
+    </processor>
+
+    <!-- This processor handles messages that are for foreign domains, where relaying is denied -->
+    <!-- As of James v2.2, this processor can be deprecated by using the<authorizedAddresses>tag
+           in the SMTP Server, and rejecting the message in the protocol transaction.  -->
+    <processor state="relay-denied" enableJmx="true">
+       <!-- To notify the sender the address was invalid, uncomment this matcher/mailet configuration -->
+       <!-- The original message is not attached to keep the bounce processor from deliverying spam -->
+       <!--
+       <mailet match="All" class="Bounce">
+          <attachment>none</attachment>
+       </mailet>
+         -->
+
+       <!-- To notify the postmaster that a relay request was denied, uncomment this matcher/mailet configuration -->
+       <!--
+       <mailet match="All" class="NotifyPostmaster"/>
+         -->
+
+       <mailet match="All" class="ToRepository">
+          <repositoryPath>file://var/mail/relay-denied/</repositoryPath>
+          <!-- An alternative database repository example follows. -->
+          <!--
+          <repositoryPath>db://maildb/deadletter/relay-denied</repositoryPath>
+            -->
+       </mailet>
+    </processor>
+
+    <!-- This processor handle the bounces from RemoteDelivery: As of James v2.3, this is the new -->
+    <!-- Default. -->
+    <!-- -->
+    <!-- DSNBounce properly create a DSN compliant bounce -->
+    <processor state="bounces" enableJmx="true">
+       <mailet match="All" class="DSNBounce">
+          <passThrough>false</passThrough>
+
+          <!-- optional subject prefix prepended to the original message -->
+          <!--
+          <prefix>[bounce]</prefix>
+            -->
+            
+          <!-- message, heads or none, default=message -->
+          <!--
+          <attachment>heads</attachment>
+            -->
+            
+          <!-- the message sent in the bounce, the first occurrence of the pattern [machine] is -->
+          <!-- replaced with the name of the executing machine -->
+          <!-- Default: Hi. This is the James mail server at [machine] ... -->
+          <!--
+          <messageString>Here is [machine]. I'm not able to deliver this message.</messageString>
+            -->
+        </mailet>
+    </processor>
+
+  </processors>
+
+</mailetcontainer>

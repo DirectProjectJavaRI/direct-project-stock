@@ -1,0 +1,1 @@
+java -classpath "james-server-cli.jar;james-server-cli.lib"  -Dlogback.configurationFile=conf/logback.xml -Dworking.directory=. org.apache.james.cli.ServerCmd %*
