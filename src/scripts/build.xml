@@ -97,14 +97,14 @@
 	<property name="lib.aopalliance" value="${install.root.dir}/lib/aopalliance-1.0.jar"></property>	
 	<property name="lib.cglib" value="${install.root.dir}/lib/cglib-nodep-2.1_3.jar"></property>	
 	<property name="lib.dom4j" value="${install.root.dir}/lib/dom4j-2.1.1.jar"></property>	
-	<property name="lib.spring-aop" value="${install.root.dir}/lib/spring-aop-5.1.2.RELEASE.jar"></property>	
-	<property name="lib.spring-beans" value="${install.root.dir}/lib/spring-beans-5.1.2.RELEASE.jar"></property>	
-	<property name="lib.spring-core" value="${install.root.dir}/lib/spring-core-5.1.2.RELEASE.jar"></property>
-	<property name="lib.spring-context" value="${install.root.dir}/lib/spring-context-5.1.2.RELEASE.jar"></property>
-	<property name="lib.spring-expression" value="${install.root.dir}/lib/spring-expression-5.1.2.RELEASE.jar"></property>	
-	<property name="lib.spring-jdbc" value="${install.root.dir}/lib/spring-jdbc-5.1.2.RELEASE.jar"></property>	
-	<property name="lib.spring-orm" value="${install.root.dir}/lib/spring-orm-5.1.2.RELEASE.jar"></property>	
-	<property name="lib.spring-tx" value="${install.root.dir}/lib/spring-tx-5.1.2.RELEASE.jar"></property>		
+	<property name="lib.spring-aop" value="${install.root.dir}/lib/spring-aop-5.1.3.RELEASE.jar"></property>	
+	<property name="lib.spring-beans" value="${install.root.dir}/lib/spring-beans-5.1.3.RELEASE.jar"></property>	
+	<property name="lib.spring-core" value="${install.root.dir}/lib/spring-core-5.1.3.RELEASE.jar"></property>
+	<property name="lib.spring-context" value="${install.root.dir}/lib/spring-context-5.1.3.RELEASE.jar"></property>
+	<property name="lib.spring-expression" value="${install.root.dir}/lib/spring-expression-5.1.3.RELEASE.jar"></property>	
+	<property name="lib.spring-jdbc" value="${install.root.dir}/lib/spring-jdbc-5.1.3.RELEASE.jar"></property>	
+	<property name="lib.spring-orm" value="${install.root.dir}/lib/spring-orm-5.1.3.RELEASE.jar"></property>	
+	<property name="lib.spring-tx" value="${install.root.dir}/lib/spring-tx-5.1.3.RELEASE.jar"></property>		
 	<property name="lib.commons-collections" value="${install.root.dir}/lib/commons-collections-3.2.2.jar"></property>		
 	<property name="lib.feign-core" value="${install.root.dir}/lib/feign-core-9.7.0.jar"></property>		
 	<property name="lib.feign-form" value="${install.root.dir}/lib/feign-form-3.3.0.jar"></property>	
@@ -114,20 +114,20 @@
 	<property name="lib.feign-slf4j" value="${install.root.dir}/lib/feign-slf4j-9.7.0.jar"></property>	
 	<property name="lib.spring-cloud-openfeign-core" value="${install.root.dir}/lib/spring-cloud-openfeign-core-2.1.0.M2.jar"></property>		
 	<property name="lib.spring-cloud-commons" value="${install.root.dir}/lib/spring-cloud-commons-2.1.0.M2.jar"></property>		
-	<property name="lib.spring-cloud-config-client" value="${install.root.dir}/lib/spring-cloud-config-client-2.1.0.M2.jar"></property>		
-	<property name="lib.spring-cloud-connectors-core" value="${install.root.dir}/lib/spring-cloud-connectors-core-2.0.3.RELEASE.jar"></property>		
+	<property name="lib.spring-cloud-config-client" value="${install.root.dir}/lib/spring-cloud-config-client-2.1.0.M3.jar"></property>		
+	<property name="lib.spring-cloud-connectors-core" value="${install.root.dir}/lib/spring-cloud-connectors-core-2.0.4.RELEASE.jar"></property>		
 	<property name="lib.spring-cloud-context" value="${install.root.dir}/lib/spring-cloud-context-2.1.0.M2.jar"></property>		
-	<property name="lib.spring-cloud-netflix-eureka-client" value="${install.root.dir}/lib/spring-cloud-netflix-eureka-client-2.1.0.M2.jar"></property>	
-	<property name="lib.spring-cloud-netflix-ribbon" value="${install.root.dir}/lib/spring-cloud-netflix-ribbon-2.1.0.M2.jar"></property>		
-	<property name="lib.spring-cloud-stream" value="${install.root.dir}/lib/spring-cloud-stream-2.1.0.RC1.jar"></property>		
-	<property name="lib.spring-cloud-services-spring-connector" value="${install.root.dir}/lib/spring-cloud-services-spring-connector-2.0.1.RELEASE.jar"></property>	
-	<property name="lib.spring-cloud-services-connector-core" value="${install.root.dir}/lib/spring-cloud-services-connector-core-2.0.1.RELEASE.jar"></property>
-	<property name="lib.spring-cloud-spring-service-connector" value="${install.root.dir}/lib/spring-cloud-spring-service-connector-2.0.3.RELEASE.jar"></property>
-	<property name="lib.spring-boot" value="${install.root.dir}/lib/spring-boot-2.1.0.RELEASE.jar"></property>
-	<property name="lib.spring-boot-actuator" value="${install.root.dir}/lib/spring-boot-actuator-2.1.0.RELEASE.jar"></property>
-	<property name="lib.spring-boot-autoconfigure" value="${install.root.dir}/lib/spring-boot-autoconfigure-2.1.0.RELEASE.jar"></property>
+	<property name="lib.spring-cloud-netflix-eureka-client" value="${install.root.dir}/lib/spring-cloud-netflix-eureka-client-2.1.0.M3.jar"></property>	
+	<property name="lib.spring-cloud-netflix-ribbon" value="${install.root.dir}/lib/spring-cloud-netflix-ribbon-2.1.0.M3.jar"></property>		
+	<property name="lib.spring-cloud-stream" value="${install.root.dir}/lib/spring-cloud-stream-2.1.0.RC2.jar"></property>		
+	<property name="lib.spring-cloud-services-spring-connector" value="${install.root.dir}/lib/spring-cloud-services-spring-connector-2.0.3.RELEASE.jar"></property>	
+	<property name="lib.spring-cloud-services-connector-core" value="${install.root.dir}/lib/spring-cloud-services-connector-core-2.0.3.RELEASE.jar"></property>
+	<property name="lib.spring-cloud-spring-service-connector" value="${install.root.dir}/lib/spring-cloud-spring-service-connector-2.0.4.RELEASE.jar"></property>
+	<property name="lib.spring-boot" value="${install.root.dir}/lib/spring-boot-2.1.1.RELEASE.jar"></property>
+	<property name="lib.spring-boot-actuator" value="${install.root.dir}/lib/spring-boot-actuator-2.1.1.RELEASE.jar"></property>
+	<property name="lib.spring-boot-autoconfigure" value="${install.root.dir}/lib/spring-boot-autoconfigure-2.1.1.RELEASE.jar"></property>
 	<property name="lib.spring-retry" value="${install.root.dir}/lib/spring-retry-1.2.2.RELEASE.jar"></property>	
-	<property name="lib.spring-web" value="${install.root.dir}/lib/spring-web-5.1.2.RELEASE.jar"></property>	
+	<property name="lib.spring-web" value="${install.root.dir}/lib/spring-web-5.1.3.RELEASE.jar"></property>	
 	
 	<!-- Support libraries (DNS) -->
 	<property name="lib.jcs" value="${install.root.dir}/lib/jcs-1.3.jar"></property>
