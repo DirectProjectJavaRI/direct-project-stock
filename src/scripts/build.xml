@@ -50,7 +50,7 @@
 	<property name="james3.stage.lib.dir" value="${james3.stage.dir}/james-server-jpa-guice.lib"></property>
 	
 	<!-- tomcat properties -->
-	<property name="tomcat.binary.url" value="http://www.gtlib.gatech.edu/pub/apache/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.tar.gz"></property>
+	<property name="tomcat.binary.url" value="http://ftp.wayne.edu/apache/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.tar.gz"></property>
 	<property name="tomcat.binary.zip" value="${build.download.dir}/apache-tomcat-9.0.13.tar.gz"></property>
 	<property name="tomcat.stage.dir" value="${env.DIRECT_INSTALL_DIR}/apache-tomcat-9.0.13"></property>
 	<property name="tomcat.webapp.dir" value="${tomcat.stage.dir}/webapps"></property>
