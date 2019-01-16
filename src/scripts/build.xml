@@ -50,9 +50,9 @@
 	<property name="james3.stage.lib.dir" value="${james3.stage.dir}/james-server-jpa-guice.lib"></property>
 	
 	<!-- tomcat properties -->
-	<property name="tomcat.binary.url" value="http://ftp.wayne.edu/apache/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.tar.gz"></property>
-	<property name="tomcat.binary.zip" value="${build.download.dir}/apache-tomcat-9.0.13.tar.gz"></property>
-	<property name="tomcat.stage.dir" value="${env.DIRECT_INSTALL_DIR}/apache-tomcat-9.0.13"></property>
+	<property name="tomcat.binary.url" value="http://ftp.wayne.edu/apache/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.tar.gz"></property>
+	<property name="tomcat.binary.zip" value="${build.download.dir}/apache-tomcat-9.0.14.tar.gz"></property>
+	<property name="tomcat.stage.dir" value="${env.DIRECT_INSTALL_DIR}/apache-tomcat-9.0.14"></property>
 	<property name="tomcat.webapp.dir" value="${tomcat.stage.dir}/webapps"></property>
 	<property name="tomcat.bin.dir" value="${tomcat.stage.dir}/bin"></property>	
 	<property name="dnsservices.stage.dir" value="${env.DIRECT_INSTALL_DIR}/DirectDNSServer"></property>
@@ -112,13 +112,13 @@
 	<property name="lib.feign-hystirx" value="${install.root.dir}/lib/feign-hystirx-9.7.0.jar"></property>	
 	<property name="lib.feign-java8" value="${install.root.dir}/lib/feign-java8-9.7.0.jar"></property>	
 	<property name="lib.feign-slf4j" value="${install.root.dir}/lib/feign-slf4j-9.7.0.jar"></property>	
-	<property name="lib.spring-cloud-openfeign-core" value="${install.root.dir}/lib/spring-cloud-openfeign-core-2.1.0.M2.jar"></property>		
-	<property name="lib.spring-cloud-commons" value="${install.root.dir}/lib/spring-cloud-commons-2.1.0.M2.jar"></property>		
-	<property name="lib.spring-cloud-config-client" value="${install.root.dir}/lib/spring-cloud-config-client-2.1.0.M3.jar"></property>		
+	<property name="lib.spring-cloud-openfeign-core" value="${install.root.dir}/lib/spring-cloud-openfeign-core-2.1.0.RC2.jar"></property>		
+	<property name="lib.spring-cloud-commons" value="${install.root.dir}/lib/spring-cloud-commons-2.1.0.RC2.jar"></property>		
+	<property name="lib.spring-cloud-config-client" value="${install.root.dir}/lib/spring-cloud-config-client-2.1.0.RC2.jar"></property>		
 	<property name="lib.spring-cloud-connectors-core" value="${install.root.dir}/lib/spring-cloud-connectors-core-2.0.4.RELEASE.jar"></property>		
-	<property name="lib.spring-cloud-context" value="${install.root.dir}/lib/spring-cloud-context-2.1.0.M2.jar"></property>		
-	<property name="lib.spring-cloud-netflix-eureka-client" value="${install.root.dir}/lib/spring-cloud-netflix-eureka-client-2.1.0.M3.jar"></property>	
-	<property name="lib.spring-cloud-netflix-ribbon" value="${install.root.dir}/lib/spring-cloud-netflix-ribbon-2.1.0.M3.jar"></property>		
+	<property name="lib.spring-cloud-context" value="${install.root.dir}/lib/spring-cloud-context-2.1.0.RC2.jar"></property>		
+	<property name="lib.spring-cloud-netflix-eureka-client" value="${install.root.dir}/lib/spring-cloud-netflix-eureka-client-2.1.0.RC2.jar"></property>	
+	<property name="lib.spring-cloud-netflix-ribbon" value="${install.root.dir}/lib/spring-cloud-netflix-ribbon-2.1.0.RC2.jar"></property>		
 	<property name="lib.spring-cloud-stream" value="${install.root.dir}/lib/spring-cloud-stream-2.1.0.RC2.jar"></property>		
 	<property name="lib.spring-cloud-services-spring-connector" value="${install.root.dir}/lib/spring-cloud-services-spring-connector-2.0.3.RELEASE.jar"></property>	
 	<property name="lib.spring-cloud-services-connector-core" value="${install.root.dir}/lib/spring-cloud-services-connector-core-2.0.3.RELEASE.jar"></property>
