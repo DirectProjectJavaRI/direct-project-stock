@@ -191,7 +191,7 @@ From the directory where you downloaded and placed the jce zip file, run the fol
 
 ##  Obtain Reference Implementation Stock Assembly
 
-The stock assembly contains all of the pre-assembled and configured components of the Bare Metal deployment. Download the latest version of the stock assembly from the maven central repository or the Sonatype [repository](https://oss.sonatype.org/content/repositories/snapshots/org/nhind/direct-project-stock/).
+The stock assembly contains all of the pre-assembled and configured components of the Bare Metal deployment. Download the latest version of the stock assembly from the maven central repository [repository](http://repo.maven.apache.org/maven2/org/nhind/direct-project-stock/6.0/direct-project-stock-6.0.tar.gz).
 
 **Note:** The maven central repository may black list some IP ranges such as virutal machines running in the Amazon EC2 cloud. Use the Sonatype repository if you are blocked from the maven central repository.
 
@@ -207,7 +207,7 @@ The assembly contains a root directly named direct and has the following folders
 
 From a browser, download the desired version of the assembly from one the repositories above.
 
-Example: Download version 6.0 - [direct-project-stock-6.0.tar.gz](https://repo1.maven.org/maven2/org/nhind/direct-project-stock/6.0-RC1/direct-project-stock-6.0-RC1.tar.gz). After downloading, unzip the contents to appropriate installation location.
+Example: Download version 6.0 - [direct-project-stock-6.0.tar.gz](http://repo.maven.apache.org/maven2/org/nhind/direct-project-stock/6.0/direct-project-stock-6.0.tar.gz). After downloading, unzip the contents to appropriate installation location.
 
 *All Linux/Unix*
 
@@ -215,13 +215,13 @@ Obtain the URL for appropriate version of the assembly and download it the /opt 
 
 ```
  cd /opt
- sudo wget https://repo1.maven.org/maven2/org/nhind/direct-project-stock/6.0-RC1/direct-project-stock-6.0-RC1.tar.gz 
+ sudo wget http://repo.maven.apache.org/maven2/org/nhind/direct-project-stock/6.0/direct-project-stock-6.0.tar.gz
 ```
 
 Extract the contents of the assembly and set the DIRECT HOME logical using the following command. Note the name of the tar.gz file if you downloaded a different version:
 
 ```
- sudo tar xvfz direct-project-stock-6.0-RC1.tar.gz 
+ sudo tar xvfz direct-project-stock-6.0.tar.gz
  export DIRECT_HOME=`pwd`/direct
  echo "export DIRECT_HOME=$DIRECT_HOME" | sudo tee -a /etc/environment
 ```
