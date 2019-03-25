@@ -197,7 +197,7 @@ The stock assembly contains all of the pre-assembled and configured components o
 
 The assembly contains a root directly named direct and has the following folders under the root.
 
-* apache-tomcat-9.0.16
+* apache-tomcat-9.0.17
 * ConfigMgmtConsole
 * DirectDNSServices
 * james-jpa-guice-3.2.0
@@ -230,7 +230,7 @@ Extract the contents of the assembly and set the DIRECT HOME logical using the f
 
 Before running the James mail servier, the configuration and message monitiroing services must be running and some minimum configuration completed. All of these services run inside the Tomcat web server.
 
-To start the tomcat server, run the following command from the DIRECT HOME/apache-tomcat-9.0.16/bin directory.
+To start the tomcat server, run the following command from the DIRECT HOME/apache-tomcat-9.0.17/bin directory.
 
 *Windows*
 
