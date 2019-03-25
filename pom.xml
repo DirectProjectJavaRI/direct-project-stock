@@ -5,7 +5,7 @@
     <artifactId>direct-project-stock</artifactId>    
     <packaging>pom</packaging>
     <name>The direct project stock assembly.</name>
-    <version>6.0-RC2</version>
+    <version>6.0</version>
     <description>Stock assembly for the direct project using the Apache James mail server and the Apache Tomcat web container.</description>
     <inceptionYear>2010</inceptionYear>
     <url>https://github.com/DirectProjectJavaRI/direct-project-stock</url> 
@@ -71,80 +71,75 @@
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-msg-monitor-web</artifactId>
 	      <type>war</type>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
 	   </dependency>      
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-service-war</artifactId>
 	      <type>war</type>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
 	   </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-service-client</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
 	   </dependency>   	    	    	
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-ui</artifactId>
 	      <type>war</type>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0.1</version>
 	   </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xd</artifactId>
 	      <type>war</type>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
 	   </dependency> 
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xd-common</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
 	   </dependency> 
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xdmail</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
 	   </dependency>  	 	    	    	   	         
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>agent</artifactId>
-	      <version>6.0.3-SNAPSHOT</version>
+	      <version>6.0.2</version>
 	   </dependency>  	
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>gateway</artifactId>
-	      <version>6.0.2-SNAPSHOT</version>
+	      <version>6.0.2</version>
        </dependency>
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-common</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
        </dependency>               
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-common-audit</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>      
+	      <version>6.0</version>      
        </dependency>           
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>dns-sboot</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
        </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-manager</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
        </dependency>                     
 	   <dependency>
 	      <groupId>org.nhind</groupId>
-	      <artifactId>xdmail</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
-       </dependency>   
-	   <dependency>
-	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-policy</artifactId>
-	      <version>6.0.1-SNAPSHOT</version>
+	      <version>6.0</version>
        </dependency>   
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -281,77 +276,6 @@
                </execution>                
             </executions>
          </plugin>   
-        <!-- DOXIA does not yet copy resources to the generated-site or site location.  Bug
-        DOXIA-355 was submitted in July of 09 and is listed to be resolved in DOXIA 1.2.
-        This plugin a is work around for copying the resources from the book source to 
-        the generate site. -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>book</id>
-              <phase>pre-site</phase>
-              <configuration>
-                <tasks>
-                  <copy todir="${project.build.directory}/generated-site/xdoc/users-guide/images/">
-                    <fileset dir="${basedir}/src/books/users-guide/images/" />
-                  </copy>
-                  <copy todir="${project.build.directory}/site/users-guide/images/">
-                    <fileset dir="${basedir}/src/books/users-guide/images/" />
-                  </copy>                  
-                </tasks>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>        
-	    <plugin>
-			<groupId>org.apache.maven.doxia</groupId>
-			<artifactId>doxia-maven-plugin</artifactId>
-			<version>1.2</version>
-			<executions>
-				<execution>
-					<phase>pre-site</phase>
-					<goals>
-						<goal>render-books</goal>
-					</goals>
-				</execution>
-			</executions>
-			<configuration>
-				<books>
-					<book>
-						<directory>src/books/users-guide</directory>
-						<descriptor>src/books/users-guide.xml</descriptor>
-						<formats>
-							<format>
-								<id>xdoc</id>
-							</format>													
-						</formats>
-					</book>
-				</books>
-			</configuration>
-			<dependencies>
-				<dependency>
-					<groupId>org.codehaus.plexus</groupId>
-					<artifactId>plexus-utils</artifactId>
-					<version>1.5.12</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.maven.doxia</groupId>
-					<artifactId>doxia-decoration-model</artifactId>
-					<version>1.2</version>
-				</dependency>
-                <dependency>
-                    <groupId>org.apache.maven.doxia</groupId>
-                    <artifactId>doxia-module-confluence</artifactId>
-                    <version>1.2</version>
-                </dependency>	
-			</dependencies>			
-		</plugin>           
-
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-javadoc-plugin</artifactId>
