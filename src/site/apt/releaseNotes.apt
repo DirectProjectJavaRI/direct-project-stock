@@ -6,6 +6,32 @@
         Greg Meyer
         ---
 
+{6.0}
+
+    Changes included with release 6.0
+    
+    []
+    
+    Enhancements/Bug Fixes
+    
+    * Requires Java 8 or higher.
+    
+    * Removal of support of James 2 and James 3 beta. James 3.2.0 is now the base version.
+    
+    * Replacement of JPA DAO classes with Spring Data repository interfaces.
+    
+    * Update to Spring 5.1.x, introduction of SpringBoot 2.1.x and SpringCloud Greenwich
+    
+    * Replacement of Jersey with Spring MVC
+    
+    * Removal of Guice and replace with Spring configuration
+    
+    * Update to Tomcat 9.x
+    
+    * Ability to run services as SpringBoot stand-alone applications vs Tomcat servlet containers/James server (experimental)
+    
+    * Documentation moved to {{{https://directprojectjavari.github.io}GitHub pages}}.  
+
 {5.1}
 
     Changes included with release 5.1
