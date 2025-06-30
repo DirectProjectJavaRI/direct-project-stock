@@ -5,7 +5,7 @@
     <artifactId>direct-project-stock</artifactId>    
     <packaging>pom</packaging>
     <name>The direct project stock assembly.</name>
-    <version>8.0.0-SNAPSHOT</version>
+    <version>8.1.0-SNAPSHOT</version>
     <description>Stock assembly for the direct project using the Apache James mail server and the Apache Tomcat web container.</description>
     <inceptionYear>2010</inceptionYear>
     <url>https://github.com/DirectProjectJavaRI/direct-project-stock</url> 
@@ -79,75 +79,75 @@
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-msg-monitor-web</artifactId>
 	      <type>war</type>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency>      
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-service-war</artifactId>
 	      <type>war</type>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-service-client</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency>   	    	    	
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-ui</artifactId>
 	      <type>war</type>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xd</artifactId>
 	      <type>war</type>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency> 
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xd-common</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency> 
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xdmail</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency>  	 	    	    	   	         
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>agent</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
 	   </dependency>  	
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>gateway</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
        </dependency>
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-common</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
        </dependency>               
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-common-audit</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>      
+	      <version>8.1.0-SNAPSHOT</version>      
        </dependency>           
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>dns-sboot</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
        </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-manager</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
        </dependency>                     
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-policy</artifactId>
-	      <version>8.0.0-SNAPSHOT</version>
+	      <version>8.1.0-SNAPSHOT</version>
        </dependency>   
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
