@@ -80,7 +80,12 @@
 	      <artifactId>direct-msg-monitor-web</artifactId>
 	      <type>war</type>
 	      <version>8.1.0-SNAPSHOT</version>
-	   </dependency>      
+	   </dependency>    
+	   <dependency>
+	      <groupId>org.nhind</groupId>
+	      <artifactId>direct-msg-monitor-model</artifactId>
+	      <version>8.1.0-SNAPSHOT</version>
+	   </dependency>          
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-service-war</artifactId>
