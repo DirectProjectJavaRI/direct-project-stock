@@ -233,7 +233,8 @@
                         <include name="dnsjava*" />
                         <include name="dsn*" />    
                         <include name="jcs*" />    
-                        <include name="mail*" />                                  
+                        <include name="javax.mail*" />    
+                        <include name="slf4j-api*" />                               
                     </fileset>
                   </copy>  
                           
