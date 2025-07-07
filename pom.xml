@@ -5,7 +5,7 @@
     <artifactId>direct-project-stock</artifactId>    
     <packaging>pom</packaging>
     <name>The direct project stock assembly.</name>
-    <version>8.1.0-SNAPSHOT</version>
+    <version>8.1.0</version>
     <description>Stock assembly for the direct project using the Apache James mail server and the Apache Tomcat web container.</description>
     <inceptionYear>2010</inceptionYear>
     <url>https://github.com/DirectProjectJavaRI/direct-project-stock</url> 
@@ -79,35 +79,35 @@
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-msg-monitor-web</artifactId>
 	      <type>war</type>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency>    
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-msg-monitor-model</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency>          
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-service-war</artifactId>
 	      <type>war</type>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-service-client</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency>   	    	    	
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-ui</artifactId>
 	      <type>war</type>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xd</artifactId>
 	      <type>war</type>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency> 
 	   <dependency>
 	      <groupId>org.nhind</groupId>
@@ -117,42 +117,42 @@
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>xdmail</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency>  	 	    	    	   	         
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>agent</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
 	   </dependency>  	
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>gateway</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
        </dependency>
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-common</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
        </dependency>               
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-common-audit</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>      
+	      <version>8.1.0</version>      
        </dependency>           
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>dns-sboot</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
        </dependency>  
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>config-manager</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
        </dependency>                     
 	   <dependency>
 	      <groupId>org.nhind</groupId>
 	      <artifactId>direct-policy</artifactId>
-	      <version>8.1.0-SNAPSHOT</version>
+	      <version>8.1.0</version>
        </dependency>   
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -311,7 +311,6 @@
               </execution>
             </executions>					
 		</plugin>
-		<!--  for releases only	
         <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-gpg-plugin</artifactId>
@@ -325,26 +324,15 @@
                 </execution>
               </executions>
         </plugin>     
-        -->  
+        <plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>0.8.0</version>
+          <extensions>true</extensions>
+          <configuration>
+            <publishingServerId>central</publishingServerId>
+          </configuration>
+        </plugin>    
       </plugins>	      
-   </build>
-   <distributionManagement>
-    <site>
-      <id>nhind-site</id>
-      <name>NHIN Direct API publication site</name>
-      <url>sftp://api.nhindirect.org/x/www/api.nhindirect.org/java/site/assembly/stock/${project.version}</url>
-    </site>
-    <snapshotRepository>
-        <id>sonatype-snapshot</id>
-        <name>Sonatype OSS Maven SNAPSHOT Repository</name>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        <uniqueVersion>false</uniqueVersion>
-     </snapshotRepository>
-     <repository>
-        <id>sonatype-release</id>
-        <name>Sonatype OSS Maven Release Repositor</name>
-        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        <uniqueVersion>false</uniqueVersion>
-     </repository>		    
-   </distributionManagement>   
+   </build>  
 </project>  

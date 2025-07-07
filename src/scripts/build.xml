@@ -63,23 +63,23 @@
 	<!-- Config server files -->
 	<property name="config.root" value="${config.root}/../config"></property>
 	<property name="config.service.dir" value="${config.root}/config-service/target"></property>
-	<property name="config.service.orig.war" value="config-service-war-8.1.0-SNAPSHOT.war"></property>
+	<property name="config.service.orig.war" value="config-service-war-8.1.0.war"></property>
 	<property name="config.service.dest.war" value="config-service.war"></property>
 	<property name="config.ui.dir" value="${config.root}/config-ui/target"></property>
-	<property name="config.ui.orig.war" value="config-ui-8.1.0-SNAPSHOT.war"></property>
+	<property name="config.ui.orig.war" value="config-ui-8.1.0.war"></property>
 	<property name="config.ui.dest.war" value="config-ui.war"></property>
 
 	<!-- xd server files -->
 	<property name="xd.root" value="${config.root}/../xd"></property>
 	<property name="xd.service.dir" value="${config.root}/xd/target"></property>
-	<property name="xd.service.orig.war" value="xd-8.1.0-SNAPSHOT.war"></property>
+	<property name="xd.service.orig.war" value="xd-8.1.0.war"></property>
 	<property name="xd.service.dest.war" value="xd.war"></property>
 	
 	
 	<!-- message monitor server files -->
 	<property name="msg-monitor.root" value="${config.root}/../msg-monitor"></property>
 	<property name="msg-monitor.service.dir" value="${config.root}/msg-monitor/target"></property>
-	<property name="msg-monitor.service.orig.war" value="direct-msg-monitor-web-8.1.0-SNAPSHOT.war"></property>
+	<property name="msg-monitor.service.orig.war" value="direct-msg-monitor-web-8.1.0.war"></property>
 	<property name="msg-monitor.service.dest.war" value="msg-monitor.war"></property>
 	
 	
@@ -119,8 +119,8 @@
 	<property name="lib.concurrent" value="${install.root.dir}/lib/concurrent-1.0.jar"></property>
 
 	<!-- Support libraries (config-service) -->
-	<property name="lib.config.proxy" value="${install.root.dir}/lib/config-service-client-8.1.0-SNAPSHOT.jar"></property>
-	<property name="lib.config-model" value="${install.root.dir}/lib/config-model-8.1.0-SNAPSHOT.jar"></property>
+	<property name="lib.config.proxy" value="${install.root.dir}/lib/config-service-client-8.1.0.jar"></property>
+	<property name="lib.config-model" value="${install.root.dir}/lib/config-model-8.1.0.jar"></property>
 	
 	<!-- Package libraries -->
 	<property name="agent.dir" value="${install.root.dir}/../agent"></property>
@@ -131,15 +131,15 @@
 	<property name="direct-msg-monitor-model.dir" value="${install.root.dir}/../direct-msg-monitor-model"></property>			
 	<property name="xdmail.dir" value="${install.root.dir}/../xdmail"></property>
 	<property name="xd-common.dir" value="${install.root.dir}/../xd-common"></property>	
-	<property name="lib.agent" value="${install.root.dir}/lib/agent-8.1.0-SNAPSHOT.jar"></property>
-	<property name="lib.gateway" value="${install.root.dir}/lib/gateway-8.1.0-SNAPSHOT.jar"></property>
-	<property name="lib.direct-common" value="${install.root.dir}/lib/direct-common-8.1.0-SNAPSHOT.jar"></property>	
-	<property name="lib.direct-msg-monitor-client" value="${install.root.dir}/lib/direct-msg-monitor-client-8.1.0-SNAPSHOT.jar"></property>	
-	<property name="lib.direct-msg-monitor-model" value="${install.root.dir}/lib/direct-msg-monitor-model-8.1.0-SNAPSHOT.jar"></property>		
-	<property name="lib.direct-common-audit" value="${install.root.dir}/lib/direct-common-audit-8.1.0-SNAPSHOT.jar"></property>		
-	<property name="lib.xdmail" value="${install.root.dir}/lib/xdmail-8.1.0-SNAPSHOT.jar"></property>
-	<property name="lib.xd-common" value="${install.root.dir}/lib/xd-common-8.1.0-SNAPSHOT.jar"></property>
-	<property name="lib.policy" value="${install.root.dir}/lib/direct-policy-8.1.0-SNAPSHOT.jar"></property>		
+	<property name="lib.agent" value="${install.root.dir}/lib/agent-8.1.0.jar"></property>
+	<property name="lib.gateway" value="${install.root.dir}/lib/gateway-8.1.0.jar"></property>
+	<property name="lib.direct-common" value="${install.root.dir}/lib/direct-common-8.1.0.jar"></property>	
+	<property name="lib.direct-msg-monitor-client" value="${install.root.dir}/lib/direct-msg-monitor-client-8.1.0.jar"></property>	
+	<property name="lib.direct-msg-monitor-model" value="${install.root.dir}/lib/direct-msg-monitor-model-8.1.0.jar"></property>		
+	<property name="lib.direct-common-audit" value="${install.root.dir}/lib/direct-common-audit-8.1.0.jar"></property>		
+	<property name="lib.xdmail" value="${install.root.dir}/lib/xdmail-8.1.0.jar"></property>
+	<property name="lib.xd-common" value="${install.root.dir}/lib/xd-common-8.1.0.jar"></property>
+	<property name="lib.policy" value="${install.root.dir}/lib/direct-policy-8.1.0.jar"></property>		
 	
 	<!-- Stylesheet to edit the config file -->
 	<property name="edit.config.stylesheet" value="${src}/scripts/edit-config.xsl"></property>
@@ -325,13 +325,13 @@
 	</target>	
 	
 	<target name="configure-tomcat">
-		<property name="config.service.orig.war" value="config-service-war-8.1.0-SNAPSHOT-.war"></property>
+		<property name="config.service.orig.war" value="config-service-war-8.1.0-.war"></property>
 		<property name="config.service.dest.war" value="config-service.war"></property>
-		<property name="config.ui.orig.war" value="config-ui-8.1.0-SNAPSHOT.war"></property>
+		<property name="config.ui.orig.war" value="config-ui-8.1.0.war"></property>
 		<property name="config.ui.dest.war" value="config-ui.war"></property>
-		<property name="xd.service.orig.war" value="xd-8.1.0-SNAPSHOT.war"></property>
+		<property name="xd.service.orig.war" value="xd-8.1.0.war"></property>
 		<property name="xd.service.dest.war" value="xd.war"></property>
-		<property name="msg-monitor.service.orig.war" value="direct-msg-monitor-web-8.1.0-SNAPSHOT.war"></property>
+		<property name="msg-monitor.service.orig.war" value="direct-msg-monitor-web-8.1.0.war"></property>
 		<property name="msg-monitor.service.dest.war" value="msg-monitor.war"></property>		
 		
 		<!-- Copy war files -->
@@ -343,7 +343,7 @@
 	</target>
 
 	<target name="configure-dns">
-		<property name="dns.service.orig.jar" value="dns-sboot-8.1.0-SNAPSHOT.jar"></property>
+		<property name="dns.service.orig.jar" value="dns-sboot-8.1.0.jar"></property>
 		<property name="dns.service.dest.jar" value="dns-sboot.jar"></property>	
 		<mkdir dir="${dnsservices.stage.dir}"></mkdir>
 		
@@ -355,7 +355,7 @@
 	</target>	
 	
 	<target name="configure-mgmt-console">
-		<property name="config.mgmt.console.orig.jar" value="config-manager-8.1.0-SNAPSHOT.jar"></property>
+		<property name="config.mgmt.console.orig.jar" value="config-manager-8.1.0.jar"></property>
 		<property name="config.mgmt.console.dest.jar" value="config-manager.jar"></property>	
 		<mkdir dir="${configmgmr.stage.dir}"></mkdir>
 		
