@@ -50,9 +50,9 @@
 	<property name="james3.stage.lib.dir" value="${james3.stage.dir}/james-server-jpa-guice.lib"></property>
 	
 	<!-- tomcat properties -->
-	<property name="tomcat.binary.url" value="https://downloads.apache.org/tomcat/tomcat-9/v9.0.106/bin/apache-tomcat-9.0.106.tar.gz"></property>
-	<property name="tomcat.binary.zip" value="${build.download.dir}/apache-tomcat-9.0.106.tar.gz"></property>
-	<property name="tomcat.stage.dir" value="${env.DIRECT_INSTALL_DIR}/apache-tomcat-9.0.106"></property>
+	<property name="tomcat.binary.url" value="https://downloads.apache.org/tomcat/tomcat-9/v9.0.107/bin/apache-tomcat-9.0.107.tar.gz"></property>
+	<property name="tomcat.binary.zip" value="${build.download.dir}/apache-tomcat-9.0.107.tar.gz"></property>
+	<property name="tomcat.stage.dir" value="${env.DIRECT_INSTALL_DIR}/apache-tomcat-9.0.107"></property>
 	<property name="tomcat.webapp.dir" value="${tomcat.stage.dir}/webapps"></property>
 	<property name="tomcat.bin.dir" value="${tomcat.stage.dir}/bin"></property>	
 	<property name="dnsservices.stage.dir" value="${env.DIRECT_INSTALL_DIR}/DirectDNSServer"></property>
