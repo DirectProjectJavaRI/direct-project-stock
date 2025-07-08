@@ -10,7 +10,7 @@
     <body>
         <menu name="Documents">
             <item name="Release Notes" href="releaseNotes.html" />    
-            <item name="Users Guide" href="users-guide/"/>       
+            <item name="Users Guide" href="https://directprojectjavari.github.io/direct-project-stock/"/>       
         </menu>
         <menu name="External Links">
         	<item name="The Direct Project Wiki" href="http://nhindirect.org" />

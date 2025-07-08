@@ -34,8 +34,8 @@
                         <xsl:text>org.nhindirect.gateway.smtp.james.matcher.RecipAndSenderIsNotLocal=</xsl:text>
                         <xsl:value-of select="$domain"/>
                     </xsl:attribute>
-            	</xsl:element>   
-            	          	                                                                                                                                
+                    <xsl:attribute name="class">org.nhindirect.gateway.smtp.james.mailet.NHINDSecurityAndTrustMailet</xsl:attribute>
+            	</xsl:element>                                                                                                                                   
             </xsl:when>
  
             <!-- Otherwise just copy things -->
