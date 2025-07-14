@@ -2,6 +2,17 @@
 
 This section outlines step by step instructions on installing and deploying a Bare Metal instance of the Java reference implementation. The instructions contains steps for a select list of software platforms such as Windows, FreeBSD, Ubuntu, CentOS, and RedHat Enterprise linux.
 
+## Major Updates in Version 8.1+
+
+Version 8.1 is a smaller technology update with minor updates and feature enhancements: Main features include:
+
+* Update to SpringBoot 2.5.x
+* Updating to BouncyCastle jdk18on
+* Defaults to OAEP Key Encryption with SHA1 Digests for message generation
+* Supports ability to decrypt messages using OAEP Key Encryption with SHA256 Digests
+* New options to set the key encryption and key digest algorithms
+* Documentation to support CloudNative deployment model
+
 ## Major Updates in Version 6.0+
 
 This document covers only versions 6.0 and later.  For documentation of earlier versions, please see docs [here](http://api.directproject.info/assembly/stock/5.1/users-guide/depl-hisp-only.html).
@@ -108,7 +119,9 @@ The Java 8 SE platform provides the runtime environment that all of the Bare Met
 
 *Windows*
 
-Download and install 8 JRE from Oracle's download web [site](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html).  After installing the JRE, set the JAVAHOME environment variable by following the instructions below:
+Download and install 8 JRE from Oracle's download web [site](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) 
+(you may be required to sign up for an account).
+After installing the JRE, set the JAVAHOME environment variable by following the instructions below:
 
 * Right click on "My Computer" (may be in different locations depending on the Windows version) and select Properties
 * If running later versions of Windows, you may be presented "ControlSystem" panel. If so, click Advanced system settings on the left side of the window.
@@ -189,202 +202,13 @@ From the directory where you downloaded and placed the jce zip file, run the fol
  sudo cp US_export_policy.jar $JAVA_HOME/jre/lib/security
 ```
 
-##  Obtain Reference Implementation Stock Assembly
+## Deploy Reference Implementation Core Components
 
-The stock assembly contains all of the pre-assembled and configured components of the Bare Metal deployment. Download the latest version of the stock assembly from the maven central repository [repository](http://repo.maven.apache.org/maven2/org/nhind/direct-project-stock/6.0/direct-project-stock-6.0.tar.gz).
+There are two deployment configurations for the Java Reference Implementation.  The links below give detailed instructions for each option:
 
-**Note:** The maven central repository may black list some IP ranges such as virutal machines running in the Amazon EC2 cloud. Use the Sonatype repository if you are blocked from the maven central repository.
+* [Legacy Deployment](LegacyDeployment.md): This consists of the legacy Apache Tomcat along with Apache James Deployment
+* [Cloud Native Deployment](CloudNativeDeployment.md): This consists of a contemporary Cloud Native deployment model with multiple
 
-The assembly contains a root directly named direct and has the following folders under the root.
-
-* apache-tomcat-9.0.17
-* ConfigMgmtConsole
-* DirectDNSServices
-* james-jpa-guice-3.2.0
-* tools
-
-*Windows*
-
-From a browser, download the desired version of the assembly from one the repositories above.
-
-Example: Download version 6.0 - [direct-project-stock-6.0.tar.gz](http://repo.maven.apache.org/maven2/org/nhind/direct-project-stock/6.0/direct-project-stock-6.0.tar.gz). After downloading, unzip the contents to appropriate installation location.
-
-*All Linux/Unix*
-
-Obtain the URL for appropriate version of the assembly and download it the /opt directory by running wget command from the /opt directory. For example, to download version direct-project-stock-6.0.tar.gz from maven central, use the following commands:
-
-```
- cd /opt
- sudo wget http://repo.maven.apache.org/maven2/org/nhind/direct-project-stock/6.0/direct-project-stock-6.0.tar.gz
-```
-
-Extract the contents of the assembly and set the DIRECT HOME logical using the following command. Note the name of the tar.gz file if you downloaded a different version:
-
-```
- sudo tar xvfz direct-project-stock-6.0.tar.gz
- export DIRECT_HOME=`pwd`/direct
- echo "export DIRECT_HOME=$DIRECT_HOME" | sudo tee -a /etc/environment
-```
-
-## Launch Tomcat
-
-Before running the James mail servier, the configuration and message monitiroing services must be running and some minimum configuration completed. All of these services run inside the Tomcat web server.
-
-To start the tomcat server, run the following command from the DIRECT HOME/apache-tomcat-9.0.17/bin directory.
-
-*Windows*
-
-```
-startup
-```
-
-*All Unix/Linux/FreeBSD*
-
-```
-sudo ./startup.sh
-```
-
-*Note:* It may take a few minutes for the web server to finish loading as it must initially deploy all of the services when run for the first time.
-
-To validate that Tomcat and the configuration services loaded successfully, launch a browser window against the server node with the following URL:
-
-```
-http://<server>:8080/config-ui
-```
-
-You should be presented with the configuration ui login screen,
-
-## Domain Name and Certificate Generation
-
-The first step in running your mail server is configuring the domain and a loading a trust anchor and certificate(s) into the configuration ui.
-
-First determine your HISPs domain name. Depending on the type of certificate resolution services you wish to host, your domain naming convention may slightly differ. Regardless of the certificate hosting model, you will need to have to have registered domain. For this document, we will assume you have a domain registered called example.com.
-
-**Note:** Refer to the Direct Project [DNS Configuration Guide](http://wiki.directproject.org/DNS_Configuration_Guide) as a starting point for determining your DNS naming convention.
-
-Now that we have our registered domain, we will host our HISP Direct messaging under the domain direct.example.com.
-
-The next step is create a root certificate (anchor) for our domain and an X.509 certificate or pair of X.509 certificates for encrypting/decrypting and signing message. There are many different options for getting these certificates such as using openssl or obtaining a certificate from a commercial third party such as DigiCert. However the Direct Project reference implementation assembly ships with a tool called certGen for generating root CAs and certificates for the purpose of pilots and interop testing.
-
-**NOTE:** The certificates generated by the certGen tool implement certificates that represent trust anchors and end entity certificates for domains and individual Direct addresses. However, these certificates do not implement a fully functional PKI (public key infrastructure) which would include multitude of additional operational aspects. PKIs are generally implemented by third party CAs such as DigiCert or VeriSign, but can by implemented by individual institutions if they resources to do so. PKI implementation is outside the scope of this document.
-
-Full documentation for the certGen tool can be found [here](https://directprojectjavari.github.io/agent/CertGen). The documentation in the certGen link runs the certGen tool from the reference implementation source tree. In the Bare Metal assembly, the certGen tool is found under the /direct/tools directory that was extracted from the tar.gz file.
-
-Run the certGen tool from tools directory using the following command:
-
-*Windows*
-
-```
-certGen
-```
-
-*All Unix/Linux*
-
-```
-./certGen.sh
-```
-
-#### Certificate Generation
-
-Now create a CA for your domain. In the certGen tool, enter a common name (CN:) for your new CA. For our domain direct.example.com, we might use something like Direct.Example.Com Root CA. Fill the other fields as needed. It is recommended you set the expiration to 1 year, the key strenth to at least 2048 bytes, and provide a password for your CA's private key.
-
-After creating the CA, create a leaf cert and using your domain name as the CN: field and fill in all other fields as needed. It is recommended you set the expiration to at least 1 year, the key strength to at least 2044 bytes, and provide a password for your private key. After creating your CA and certificate, you should have the following similarly named files in your /tools directory (assuming the direct.example.com domain and no email address entered in the CA dialog. If an email address is entered, then the CA files will have the eamil address in the file name instead of the CN field).
-
-* Direct.Example.com Root CA.der = Root CA file (trust anchor for you HISP)
-* Direct.Example.com Root CAKey.der - Root CA private key file
-* direct.example.com.der - Org certificate file
-* direct.example.comKey.der - Org certificate private key file
-* direct.example.com.p12 - Org certificate PKCS12 file
-
-##### Single Use Certificates
-
-The certGen tool does support generating single use certificates. If you wish to implement single use certificates, refer to this specific [section](SingleUseCerts).
-
-## Import Anchors and Certificates
-
-Before the security and trust agent can be run, you must create you domain in the configuration ui tool and import anchors and certificates. Follow the steps below to create your domain and import your trust anchor and certificate(s). A full description of the config ui and operations can be found [here](https://directprojectjavari.github.io/gateway/SMTPWebConfiguration).
-
-1. Log into http://<server>:8080/config-ui with username: admin and password: direct
-  * Click **Create New Domain**.
-  * Enter the Domain Name and Postmaster E-Mail Address for the domain this HISP will be handling. Typical postmaster address is postmaster@<domain name>.
-  * Choose ENABLED as the status.
-  * Click **Add**
-  
-2. Click the Anchors tab.
-  * Click **Choose File**... and browse to the location of your trust anchor, and select it.
-  * Check Incoming and Outgoing
-  * Choose ENABLED as the status.
-  * Click **Add anchor**
-
-3. Click *Certificates* at the top of the screen
-  * Click **Choose File** and browse to the location of you org certificate PKCS12 file, and select it
-  * Choose Unprotected PKCS12 as the private key type
-  * Choose ENABLED as the status.
-  * Click **Add Crtificate**
-  
-If you have multiple certificate files for scenarios such as single use certificates, repeat the previous 3 steps for each certificate file.
-
-Before your HISP can communicate with other HISP, you must import anchors from other HISPs to establish trusted communication. You must also provide your trust anchor to the HISP(s) you are communicating with. There are a few options of HISPs that exist for interop testing that can be easily accessed.  An easier way is to import trust bundles and add that trust bundle to you domain.  A common test bundle is the DirectTrust Interop Test bundle found [here](https://bundles.directtrust.org/bundles/interopTestCommunity.p7b).  This includes an anchor for the following test domain:
-
-* direct.securehealthemail.com
-  * Testing HISP running the latest version of the Java Bare Metal assembly. Contact gm2552@cerner.com to establish a trust relationship.
-
-## Configure and Run James Mail Server
-
-First, configure james with your domain name. 
-
-*Windows*
-
-**NOTE:** You will need ant installed to use the batch file method.
-
-To set the domain via the batch file, open a command prompt, CD to the %DIRECTHOME%/james-jpa-guice-3.2.0 directory and run the following command:
-
-```
-setdomain <your domain name>
-```
-
-*All Unix/Linux/*
-
-Run the following commands:
-
-```
- cd $DIRECT_HOME/james-jpa-guice-3.2.0
- sh ./setdomain.sh <your domain name>
-```
-
-Now start the Apache James mail server with security and trust agent with the following commands:
-
-*Windows*
-
-**NOTE:** The Windows version does not current support running as a background service.
-
-```
-james
-```
-
-*All Unix/Linux/FreeBSD*
-
-```
-james start
-```
-
-Now add your first user.
-
-*Windows*
-
-```
-cd %DIRECTHOME%/james-jpa-guice-3.2.0
-james-cli -h localhost adduser username password
-```
-
-*All Unix/Linux/FreeBSD*
-
-```
-cd $DIRECT_HOME/apache-james-3.0-beta4/bin
-./james-cli.sh -h localhost adduser username password
-```
-
-**NOTE:**  The username should contain @domainname.
 
 ## DNS Records
 
@@ -410,15 +234,31 @@ A fall back alternative is manually distributing your org certificate to the HIS
 
 The following are optional, but recommended, next steps to secure your environment. These are only small configuration tweaks; other configuration options that cover specific areas are covered in the deployment options [section](ImpOptions).
 
-#### Secure Configuration Service Port (8080)
+#### Secure Internal Service Ports
 
-To secure the configuration service, it is recommended to limit access to port 8080 to localhost and/or a local subnet.
+To secure internal services, it is recommended to limit access the service ports to localhost and/or a local subnet.
 
 #### Secure Configuration Service Password
 
-To further protect the configuration service, or if port 8080 must remain public, it is recommended to change the default password.  The default password is *direct* which is encrypted in the *<tomcat home>/webapps/config-ui/WEB-INF/classes/bootstrap.properties* file under the property *direct.configui.security.user.password*.  You can either change the password by putting the new password in plain text (remove the {bcrypt} before the password) or you can create an encrypted representation using an online bcrypt web [site](https://www.browserling.com/tools/bcrypt).  **NOTE:** If you are using an encrypted password in the properties file, be sure to leave the *{bcrypt}* text before the encrypted text.
+To further protect internal configuration service, or if ports must remain public, it is recommended to change the default password for the configuration service.  The default password is *direct* which located in the following locations depending on your deployment model:
+
+- Legacy Deployment
+
+The default password is encrypted in the *<tomcat home>/webapps/config-ui/WEB-INF/classes/bootstrap.properties* file under the property *direct.configui.security.user.password*.  You can either change the password by putting the new password in plain text (remove the {bcrypt} before the password) or you can create an encrypted representation using an online bcrypt web [site](https://www.browserling.com/tools/bcrypt).  **NOTE:** If you are using an encrypted password in the properties file, be sure to leave the *{bcrypt}* text before the encrypted text.
 
 Restart the tomcat server for the changes to take affect.
+
+- Cloud Native Deployment
+
+The default password is contained withing the code itself, but can be overridden by creating an `application.properties` or `application.yaml` file in the same
+directory as the config-service.jar file and setting the password under the property *direct.configui.security.user.password*.  You can either change the password by putting 
+the new password in plain text (remove the {bcrypt} before the password) or you can create an encrypted representation using an online bcrypt web [site](https://www.browserling.com/tools/bcrypt).  **NOTE:** If you are using an encrypted password in the properties file, be sure to leave the *{bcrypt}* text before the encrypted text 
+
+You can use any other Spring configuration method to set the password property (you don't have to use an application.properties or application.yaml file) such as
+JVM parameters or even an external source like Spring Cloud Config.
+
+Restart the configuration service process for the changes to take effect.
+
 
 #### Add Own Server Certificate to James
 
@@ -433,4 +273,5 @@ The message monitoring service is preconfigured with common settings, but can be
 #### Define Policy Definitions
 
 Starting with version 3.0, an optional module is available for defining X509 certificate policies. See the policy enablement module (direct-policy) users [guide](https://directprojectjavari.github.io/direct-policy/) for full details.
+
 
