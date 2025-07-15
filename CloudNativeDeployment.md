@@ -163,3 +163,15 @@ java -Dworking.directory=. -Dlogging.config=file:conf/logback.xml -jar <binary>
 
 </configuration>
 ```
+
+Finally, launch each micro-service.  The order doesn't really matter other than you need to have the `config-service` running first.  To start the services, simply run `./service.sh start` or `service.bat` from each directory.  If you need to
+debug the output interactively, you can run `./service.sh console` on Unix based machines to see the logs in your terminal (vs only seeing them in the log file).  To stop the service, simply run 
+`./service.sh stop` or press `CTRL+C` if running interactively.
+
+## Modify Service Default Configuration
+
+Each service is coded with a default set of configuration values, however you may want/need to override these setting to suite your deployment needs.  For example, the configuration service and James uses a local file based database with
+default credentials.  It is likely that you will want to use a "real" database running on a dedicated machine like MySQL or Postgres.  The same goes for RabbitMQ where you will probably not want to use the local RabbitMQ instance running 
+in docker with the guest/guest credentails.
+
+A simple way to override the default settings is to use Spring configuration via an application.yaml file placed in each directory that needs overriding.  
