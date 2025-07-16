@@ -182,8 +182,23 @@ list some of the common application settings that you may want to customized dep
 | Name | Description | Default Value |
 | :---         | :---           | :---          |
 | spring.r2dbc.*                | Database connection configuration.  See Spring [data properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.data) settings for full details. | url: `r2dbc:h2:file:///./embedded-db/nhindconfig`<br> username: `sa`<br>password: `""`  |
-| spring.sql.init.platform      | Platform to use in the default schema generation script.  Supported options are `h2`, `mysql`, and `postgresql` | h2  |
+| spring.sql.init.platform      | Platform to use in the default schema generation script.  Supported options are `h2`, `mysql`, and `postgresql` | `h2`  |
 | spring.security.user.name     | The basic auth username to access the configuration service API. | `admin`  |
 | spring.security.user.password | The basic auth password to access the configuration service API. | `d1r3ct;`  |
 
 ### Configuration UI
+
+| Name | Description | Default Value |
+| :---         | :---           | :---          |
+| direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. | `admin` |
+| direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. |`d1r3ct;` |
+| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/' |
+| direct.configui.security.user.name             | Username to login into the configuration UI web application | `admin` |
+| direct.configui.security.user.password         | Password to login into the configuration UI web application | `direct` |
+
+### Message Monitor
+
+| :---         | :---           | :---          |
+| spring.data.*                | Database connection configuration.  See Spring [data properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.data) settings for full details. | url: `jdbc:derby:msgmonitor;create=true`<br> username: `nhind`<br>password: `nhind`  |
+| spring.rabbitmq.*        | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
+
