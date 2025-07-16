@@ -174,4 +174,16 @@ Each service is coded with a default set of configuration values, however you ma
 default credentials.  It is likely that you will want to use a "real" database running on a dedicated machine like MySQL or Postgres.  The same goes for RabbitMQ where you will probably not want to use the local RabbitMQ instance running 
 in docker with the guest/guest credentails.
 
-A simple way to override the default settings is to use Spring configuration via an application.yaml file placed in each directory that needs overriding.  
+Spring supports several options for providing application configuration, and a simple way to override the default settings is to use an application.yaml file placed in each directory that needs custom configuration settings.  The following tables
+list some of the common application settings that you may want to customized depending on your needs.
+
+### Configuration Service
+
+| Name | Description | Default Value |
+| :---         | :---           | :---          |
+| spring.r2dbc.*                | Database connection configuration.  See Spring [data properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.data) settings for full details. | url: `r2dbc:h2:file:///./embedded-db/nhindconfig`<br> username: `sa`<br>password: `""`  |
+| spring.sql.init.platform      | Platform to use in the default schema generation script.  Supported options are `h2`, `mysql`, and `postgresql` | h2  |
+| spring.security.user.name     | The basic auth username to access the configuration service API. | `admin`  |
+| spring.security.user.password | The basic auth password to access the configuration service API. | `d1r3ct;`  |
+
+### Configuration UI
