@@ -168,6 +168,8 @@ Finally, launch each micro-service.  The order doesn't really matter other than 
 debug the output interactively, you can run `./service.sh console` on Unix based machines to see the logs in your terminal (vs only seeing them in the log file).  To stop the service, simply run 
 `./service.sh stop` or press `CTRL+C` if running interactively.
 
+Once the services are up and running, you can perform a preliminary test that system is working by accessing the Config UI at http://<server IP>:8080/ 
+
 ## Modify Service Default Configuration
 
 Each service is coded with a default set of configuration values, however you may want/need to override these setting to suite your deployment needs.  For example, the configuration service and James uses a local file based database with
@@ -198,7 +200,67 @@ list some of the common application settings that you may want to customized dep
 
 ### Message Monitor
 
+| Name | Description | Default Value |
 | :---         | :---           | :---          |
 | spring.data.*                | Database connection configuration.  See Spring [data properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.data) settings for full details. | url: `jdbc:derby:msgmonitor;create=true`<br> username: `nhind`<br>password: `nhind`  |
 | spring.rabbitmq.*        | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
+| direct.msgmonitor.condition.generalConditionTimeout  | Time in miliseconds the system will wait for MDN or DSN notification messages before generating an error message | `3600000`  |
+| direct.msgmonitor.condition.reliableConditionTimeout  | Time in miliseconds the system will wait for MDN or DNS notification messages before generating an error message when the original sender invokes the "implementation guide for delivery notification" | `3600000`  |
+| direct.msgmonitor.dupStateDao.retensionTime  | Time in days the tracking information will be store in the system before being purged | `7`  |
 
+### SMTP/MQ Gateway
+| Name | Description | Default Value |
+| :---         | :---           | :---          |
+| spring.rabbitmq.*                 | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
+| direct.smtpmqgateway.binding.port | The port that the server will listen on for incoming SMTP traffic.  If you intend to make this server your primary SMTP interface to the internet, you should change this value to `25` | `1025` |
+| direct.smtpmqgateway.binding.host | The local IP address that this server will bind to.  By default, it will bind to all addresses. | `0.0.0.0` |
+| direct.smtpmqgateway.binding.maxHeaderSize | The maximum size in byte that the Mime header may be in incoming messages. | `262144` |
+| direct.smtpmqgateway.binding.maxMessageSize | The maximum size in byte allowed for incoming messages | `39845888` |
+
+### Security and Trust Agent
+| Name | Description | Default Value |
+| :---         | :---           | :---          |
+| spring.rabbitmq.*                 | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
+| direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. | `admin` |
+| direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. |`d1r3ct;` |
+| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/' |
+
+### Apache James
+| Name | Description | Default Value |
+| :---         | :---           | :---          |
+| spring.data.*                | Database connection configuration.  See Spring [data properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.data) settings for full details. | url: `jdbc:derby:./var/store/derby;create=true`<br> username: `app`<br>password: `app`<br>driver-class-name: `org.apache.derby.jdbc.EmbeddedDriver`<br>adapter: `DERBY`<br>streaming: `false`  |
+| spring.rabbitmq.*        | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
+| direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. | `admin` |
+| direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. |`d1r3ct;` |
+| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/' |
+| james.server.webadmin.enabled                  | Enables the james web admin API. | `true` |
+| james.server.webadmin.username                 | Basic auth user name to access to the james web admin API. | `admin` |
+| james.server.webadmin.password                 | Basic auth password to access to the james web admin API. | `d1r3ct` |
+| james.server.webadmin.port                     | The HTTP port to access to the james web admin API. | `8084` |
+| james.server.imap.bind                         | The local IP address that this server will bind to for the IMAP protocol.  By default, it will bind to all addresses. | `0.0.0.0` |
+| james.server.imap.port                         | The HTTP port that IMAP protocol will listen on for incoming connections. | `1143` |
+| james.server.imap.sockettls                    | Indicates if the intial IMAP connection is done over TLS | `false` |
+| james.server.imap.starttls                     | Indicates if the IMAP protocoal support the upgrade option to TLS | `true` |
+| james.server.imap.imapKeyStore                 | The key store file used for IMAP TLS connection | `/properties/keystore` |
+| james.server.imap.imapKeyStorePassword         | The password for the IMAP key store file | `1kingpuff` |
+| james.server.pop3.bind                         | The local IP address that this server will bind to for the POP3 protocol.  By default, it will bind to all addresses. | `0.0.0.0` |
+| james.server.pop3.port                         | The HTTP port that POP3 protocol will listen on for incoming connections. | `1110` |
+| james.server.pop3.sockettls                    | Indicates if the intial POP3 connection is done over TLS | `false` |
+| james.server.pop3.starttls                     | Indicates if the POP3 protocoal support the upgrade option to TLS | `true` |
+| james.server.pop3.imapKeyStore                 | The key store file used for POP3 TLS connection | `/properties/keystore` |
+| james.server.pop3.imapKeyStorePassword         | The password for the POP3 key store file | `1kingpuff` |
+| james.server.smtp.bind                         | The local IP address that this server will bind to for the SMTP protocol.  By default, it will bind to all addresses. | `0.0.0.0` |
+| james.server.smtp.port                         | The HTTP port that SMTP protocol will listen on for incoming connections. | `1587` |
+| james.server.smtp.sockettls                    | Indicates if the intial SMTP connection is done over TLS | `false` |
+| james.server.smtp.starttls                     | Indicates if the SMTP protocoal support the upgrade option to TLS | `true` |
+| james.server.smtp.imapKeyStore                 | The key store file used for SMTP TLS connection | `/properties/keystore` |
+| james.server.smtp.imapKeyStorePassword         | The password for the SMTP key store file | `1kingpuff` |
+
+### XD
+| Name | Description | Default Value |
+| :---         | :---           | :---          |
+| spring.rabbitmq.*        | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
+| server.servlet.context-path         | The application context path for HTTP requests | `/xd` |
+| direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. You will need to set the value | `` |
+| direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. You will need to set the value | `` |
+| direct.config.service.url                      | URL of the configuration service API.  You will need to change this value to `http://localhost:8082/`| `http://localhost:8080/config-service' |
