@@ -168,7 +168,7 @@ Finally, launch each micro-service.  The order doesn't really matter other than 
 debug the output interactively, you can run `./service.sh console` on Unix based machines to see the logs in your terminal (vs only seeing them in the log file).  To stop the service, simply run 
 `./service.sh stop` or press `CTRL+C` if running interactively.
 
-Once the services are up and running, you can perform a preliminary test that system is working by accessing the Config UI at http://<server IP>:8080/ 
+Once the services are up and running, you can perform a preliminary test that system is working by accessing the Config UI at `http://<server IP>:8080/` 
 
 ## Modify Service Default Configuration
 
