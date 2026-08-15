@@ -143,7 +143,7 @@ The certGen tool does support generating single use certificates. If you wish to
 
 Before the security and trust agent can be run, you must create you domain in the configuration ui tool and import anchors and certificates. Follow the steps below to create your domain and import your trust anchor and certificate(s). A full description of the config ui and operations can be found [here](https://directprojectjavari.github.io/gateway/SMTPWebConfiguration).
 
-1. Log into http://`<server>`:8080/config-ui with username: admin and password: direct
+1. Log into `http://<server>:8080/config-ui` with username: admin and password: direct
   * Click **Create New Domain**.
   * Enter the Domain Name and Postmaster E-Mail Address for the domain this HISP will be handling. Typical postmaster address is postmaster@`<domain name>`.
   * Choose ENABLED as the status.
