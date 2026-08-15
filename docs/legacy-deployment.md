@@ -88,7 +88,7 @@ sudo ./startup.sh
 To validate that Tomcat and the configuration services loaded successfully, launch a browser window against the server node with the following URL:
 
 ```
-http://`<server>`:8080/config-ui
+http://<server>:8080/config-ui
 ```
 
 You should be presented with the configuration ui login screen.
