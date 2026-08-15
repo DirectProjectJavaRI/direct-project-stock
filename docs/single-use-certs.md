@@ -1,3 +1,7 @@
+---
+title: Single Use Certificates
+---
+
 # Single Use Certificates
 
 With federal and other governmental agencies implementation Direct, many of their policies dictate using single use certificates. Single use certificates are end entity certificates whose key usage asserts only the key encipherment or digital signature bit; dual use certificates assert both usages in one certificate. Because Direct uses both encryption and digital signature operations, it's apparent that single use certificates require 2 certificates for each domain or email address. Each certificate in a single use certificate pair contains the exact same attributes with the exception of the public/private key pair and key usage bit.
@@ -47,7 +51,7 @@ Create a file named DigitalSig.pol and add the following line to the file:
 (X509.TBS.EXTENSION.KeyUsage & 128) > 0
 ```
 
-Now you need to import the policy file into your system and associate it with a domain. To import and configure policies, you will use the ConfigMgmtConsole tool found in the <DIRECTHOME>/ConfigMgmtConsole directory. Launch a command prompt, navigate to the tool's directory, and run the following command to launch the tool:
+Now you need to import the policy file into your system and associate it with a domain. To import and configure policies, you will use the ConfigMgmtConsole tool found in the `<DIRECTHOME>`/ConfigMgmtConsole directory. Launch a command prompt, navigate to the tool's directory, and run the following command to launch the tool:
 
 *Windows*
 
@@ -61,7 +65,7 @@ configMgr
 ./ConfigMgmtConsole
 ```
 
-When the tool is loaded, import the digital signature policy using the following command replacing <pathtoFile> with the location of the file:
+When the tool is loaded, import the digital signature policy using the following command replacing `<pathtoFile>` with the location of the file:
 
 ```
 IMPORTPOLICY "Digital Signature" <pathtoFile>/DigitalSig.pol
@@ -97,7 +101,7 @@ Create a file named KeyEncyipher.pol and the following line to the file:
 (X509.TBS.EXTENSION.KeyUsage & 32) > 0
 ```
 
-Next you need to import the policy into your system with the ConfigMgmtConsole tool. Once you have launched the tool, import the policy with the following command replacing <pathtoFile> with the location of the file:
+Next you need to import the policy into your system with the ConfigMgmtConsole tool. Once you have launched the tool, import the policy with the following command replacing `<pathtoFile>` with the location of the file:
 
 ```
 IMPORTPOLICY DNSCertPolicy <pathtoFile>/KeyEncyipher.pol

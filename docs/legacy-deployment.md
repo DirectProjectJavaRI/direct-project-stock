@@ -1,3 +1,7 @@
+---
+title: Legacy HISP Deployment Model
+---
+
 # Legacy HISP Deployment Model
 
 The legacy model consists of Apache Tomcat running along with Apache James to deploy the HISP (save the DNS server which runs as
@@ -133,15 +137,15 @@ After creating the CA, create a leaf cert and using your domain name as the CN: 
 
 ##### Single Use Certificates
 
-The certGen tool does support generating single use certificates. If you wish to implement single use certificates, refer to this specific [section](SingleUseCerts).
+The certGen tool does support generating single use certificates. If you wish to implement single use certificates, refer to this specific [section](single-use-certs).
 
 ## Import Anchors and Certificates
 
 Before the security and trust agent can be run, you must create you domain in the configuration ui tool and import anchors and certificates. Follow the steps below to create your domain and import your trust anchor and certificate(s). A full description of the config ui and operations can be found [here](https://directprojectjavari.github.io/gateway/SMTPWebConfiguration).
 
-1. Log into http://<server>:8080/config-ui with username: admin and password: direct
+1. Log into `http://<server>:8080/config-ui` with username: admin and password: direct
   * Click **Create New Domain**.
-  * Enter the Domain Name and Postmaster E-Mail Address for the domain this HISP will be handling. Typical postmaster address is postmaster@<domain name>.
+  * Enter the Domain Name and Postmaster E-Mail Address for the domain this HISP will be handling. Typical postmaster address is postmaster@`<domain name>`.
   * Choose ENABLED as the status.
   * Click **Add**
   

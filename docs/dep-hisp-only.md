@@ -1,3 +1,7 @@
+---
+title: HISP Only Deployment (no source)
+---
+
 # HISP Only Deployment (no source)
 
 This section outlines step by step instructions on installing and deploying a Bare Metal instance of the Java reference implementation. The instructions contains steps for a select list of software platforms such as Windows, FreeBSD, Ubuntu, CentOS, and RedHat Enterprise linux.
@@ -206,8 +210,8 @@ From the directory where you downloaded and placed the jce zip file, run the fol
 
 There are two deployment configurations for the Java Reference Implementation.  The links below give detailed instructions for each option:
 
-* [Legacy Deployment](LegacyDeployment.md): This consists of the legacy Apache Tomcat along with Apache James Deployment
-* [Cloud Native Deployment](CloudNativeDeployment.md): This consists of a contemporary Cloud Native deployment model with multiple
+* [Legacy Deployment](legacy-deployment): This consists of the legacy Apache Tomcat along with Apache James Deployment
+* [Cloud Native Deployment](cloud-native-deployment): This consists of a contemporary Cloud Native deployment model with multiple
 
 
 ## DNS Records
@@ -232,7 +236,7 @@ A fall back alternative is manually distributing your org certificate to the HIS
 
 ## Recommended Next Steps
 
-The following are optional, but recommended, next steps to secure your environment. These are only small configuration tweaks; other configuration options that cover specific areas are covered in the deployment options [section](ImpOptions).
+The following are optional, but recommended, next steps to secure your environment. These are only small configuration tweaks; other configuration options that cover specific areas are covered in the deployment options [section](imp-options).
 
 #### Secure Internal Service Ports
 
@@ -244,7 +248,7 @@ To further protect internal configuration service, or if ports must remain publi
 
 - Legacy Deployment
 
-The default password is encrypted in the *<tomcat home>/webapps/config-ui/WEB-INF/classes/bootstrap.properties* file under the property *direct.configui.security.user.password*.  You can either change the password by putting the new password in plain text (remove the {bcrypt} before the password) or you can create an encrypted representation using an online bcrypt web [site](https://www.browserling.com/tools/bcrypt).  **NOTE:** If you are using an encrypted password in the properties file, be sure to leave the *{bcrypt}* text before the encrypted text.
+The default password is encrypted in the *`<tomcat home>`/webapps/config-ui/WEB-INF/classes/bootstrap.properties* file under the property *direct.configui.security.user.password*.  You can either change the password by putting the new password in plain text (remove the {bcrypt} before the password) or you can create an encrypted representation using an online bcrypt web [site](https://www.browserling.com/tools/bcrypt).  **NOTE:** If you are using an encrypted password in the properties file, be sure to leave the *{bcrypt}* text before the encrypted text.
 
 Restart the tomcat server for the changes to take affect.
 

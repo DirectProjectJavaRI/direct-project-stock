@@ -1,3 +1,7 @@
+---
+title: Configuration and Message Monitor Storage
+---
+
 # Configuration and Message Monitor Storage
 
 By default, the configuration and message monitor services uses the embedded file based Derby database. Although this simplifies an out of the box solution deployment, it has several disadvantages:
@@ -8,7 +12,7 @@ By default, the configuration and message monitor services uses the embedded fil
 
 These are only a small collection of issues and it becomes obvious that an enterprise/distributed database solution is needed for a robust production solution.
 
-The configuration and message monitoring services database configuration is held in a file named *bootstrap.properties* under the <tomcat home>\webapps\<app name>\WEB-INF\classes directory.  They use the standard spring datasource properties.  To connect to different database source, simply update these properties with proper database settings:
+The configuration and message monitoring services database configuration is held in a file named *bootstrap.properties* under the `<tomcat home>\webapps\<app name>\WEB-INF\classes` directory.  They use the standard spring datasource properties.  To connect to different database source, simply update these properties with proper database settings:
 
 * spring.datasource.url=
 * spring.datasource.username=

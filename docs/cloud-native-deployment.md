@@ -1,3 +1,7 @@
+---
+title: Cloud Native HISP Deployment Model
+---
+
 # Cloud Native HISP Deployment Model
 
 The cloud native model consists of smaller individual processes (i.e. micro-services) performing specific functional tasks and exposing APIs
@@ -44,7 +48,7 @@ The following list outlines each micro-service, the jar file that comprises the 
 | Config UI         | [config-ui.war](https://repo.maven.apache.org/maven2/org/nhind/config-ui/8.1.0/config-ui-8.1.0.war) | Front end web UI application to configure the HISP including domains, DNS enttires, trust bundles, and certificates.  |
 | Message Monitor   | [direct-msg-monitor-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-msg-monitor-sboot/8.1.0/direct-msg-monitor-sboot-8.1.0.jar) | Tracks the status of notifications of Direct messages and generates error messages if required notifications are not received.  Notification statuses are sent from other micro-services (STA and James) via the message broker (eg. RabbitMQ) |
 | SMTP/MQ Gateway   | [direct-smtp-mq-gateway.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-smtp-mq-gateway/8.1.0/direct-smtp-mq-gateway-8.1.0.jar) | Externaly facing SMTP server intented to receive Direct messages from external HISPs.  It forwards Direct messgaes into the message processing stream via the system's message broker.  **NOTE**  This SMTP server does not providce comercial capability such as anti spam filters or malware detection.  It may be advisable to front this SMTP server by a commercial SMTP if you have needs for commercial capabilities to control of incoming messages.  |
-| Security and Trust Agent | [direct-sta-sboot.jar]([config-service-8.1.0.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-sta-sboot/8.1.0/direct-sta-sboot-8.1.0.jar)) | Executes the main security and trust agent logic as define the Direct specification.  Also handlels processing XD stepping and forwarding processed messages to either external HISPs or internal final destination depending of the sender and receiver of the messages.  Internal final destination are either the James server application or XD endpoints. |
+| Security and Trust Agent | [direct-sta-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-sta-sboot/8.1.0/direct-sta-sboot-8.1.0.jar) | Executes the main security and trust agent logic as define the Direct specification.  Also handlels processing XD stepping and forwarding processed messages to either external HISPs or internal final destination depending of the sender and receiver of the messages.  Internal final destination are either the James server application or XD endpoints. |
 | Apache James      | [direct-james-server](https://repo.maven.apache.org/maven2/org/nhind/direct-james-server/8.1.0/direct-james-server-8.1.0.jar) | Mail server for HISP end users.  It allows end user to send and receive messages using mail clients meaning it is a final destination for incoming Direct messages.  It also handles sending MDN dipatched messages when requested by the oroginal sender.  Outgoing and incoming messages are send to and from the STA via the message broker. |
 | XD                | [xd.war](https://repo.maven.apache.org/maven2/org/nhind/xd/8.1.0/xd-8.1.0.war) | Implements an XD endpoing for the purpose of end users sending outgoing messages using the XDR protocol.  Outgoing and messages are send to and from the STA via the message broker.  |
 
@@ -73,7 +77,7 @@ Obtain each jar/war file from maven and place each into own directory on your ta
 | Config UI         | [config-ui.war](https://repo.maven.apache.org/maven2/org/nhind/config-ui/8.1.0/config-ui-8.1.0.war) | `config-ui`  |
 | Message Monitor   | [direct-msg-monitor-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-msg-monitor-sboot/8.1.0/direct-msg-monitor-sboot-8.1.0.jar) | `message-monitor` |
 | SMTP/MQ Gateway   | [direct-smtp-mq-gateway.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-smtp-mq-gateway/8.1.0/direct-smtp-mq-gateway-8.1.0.jar) | `smtp-gateway`  |
-| Security and Trust Agent | [direct-sta-sboot.jar]([config-service-8.1.0.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-sta-sboot/8.1.0/direct-sta-sboot-8.1.0.jar)) | `sta` |
+| Security and Trust Agent | [direct-sta-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-sta-sboot/8.1.0/direct-sta-sboot-8.1.0.jar) | `sta` |
 | Apache James      | [direct-james-server](https://repo.maven.apache.org/maven2/org/nhind/direct-james-server/8.1.0/direct-james-server-8.1.0.jar) | `james` |
 | XD                | [xd.war](https://repo.maven.apache.org/maven2/org/nhind/xd/8.1.0/xd-8.1.0.war) | `xd` |
 
@@ -194,7 +198,7 @@ list some of the common application settings that you may want to customized dep
 | :---         | :---           | :---          |
 | direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. | `admin` |
 | direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. |`d1r3ct;` |
-| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/' |
+| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/` |
 | direct.configui.security.user.name             | Username to login into the configuration UI web application | `admin` |
 | direct.configui.security.user.password         | Password to login into the configuration UI web application | `direct` |
 
@@ -223,7 +227,7 @@ list some of the common application settings that you may want to customized dep
 | spring.rabbitmq.*                 | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
 | direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. | `admin` |
 | direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. |`d1r3ct;` |
-| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/' |
+| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/` |
 
 ### Apache James
 | Name | Description | Default Value |
@@ -232,7 +236,7 @@ list some of the common application settings that you may want to customized dep
 | spring.rabbitmq.*        | RabbitMQ connection properties. See Spring [integration properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.integration) settings for full details. | host: `localhost`<br>port: `5672`<br>username: `guest`<br>password: `guest` |
 | direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. | `admin` |
 | direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. |`d1r3ct;` |
-| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/' |
+| direct.config.service.url                      | URL of the configuration service API | `http://localhost:8082/` |
 | james.server.webadmin.enabled                  | Enables the james web admin API. | `true` |
 | james.server.webadmin.username                 | Basic auth user name to access to the james web admin API. | `admin` |
 | james.server.webadmin.password                 | Basic auth password to access to the james web admin API. | `d1r3ct` |
@@ -263,4 +267,4 @@ list some of the common application settings that you may want to customized dep
 | server.servlet.context-path         | The application context path for HTTP requests | `/xd` |
 | direct.webservice.security.basic.user.name     | Basic auth user name to access to the configuration service API. You will need to set the value | `` |
 | direct.webservice.security.basic.user.password | Basic auth password to access to the configuration service API. You will need to set the value | `` |
-| direct.config.service.url                      | URL of the configuration service API.  You will need to change this value to `http://localhost:8082/`| `http://localhost:8080/config-service' |
+| direct.config.service.url                      | URL of the configuration service API.  You will need to change this value to `http://localhost:8082/`| `http://localhost:8080/config-service` |
