@@ -1,0 +1,18 @@
+name: Notify docs hub
+
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'docs/**'
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fire repository_dispatch to DirectProjectJavaRI.github.io
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DOCS_DISPATCH_TOKEN }}
+          repository: DirectProjectJavaRI/DirectProjectJavaRI.github.io
+          event-type: docs-updated

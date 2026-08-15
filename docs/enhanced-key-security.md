@@ -1,3 +1,7 @@
+---
+title: Enhanced Private Key Security
+---
+
 # Enhanced Private Key Security
 
 Although version 4.0 of Bare Metal added additional protection of private keys, it only protected keys at rest. When keys were "activated," they were loaded into the agent's process memory completely unencrypted. Some deployments may lock down access to the agent tight enough that this may be acceptable, but it still leaves the keys venerable to any entity with access to the agent's process memory.
@@ -86,9 +90,9 @@ CreateRandomSecretKey privateKeyWrapperSecrets
 
 When importing unencrypted keys with enhanced key protection, the config-ui can wrap unencrypted keys before sending them to the configuration service. **NOTE:** This is not the preferred method when using key wrapping. A more appropriate approach is to generate the keys on the HSM, export/wrap the keys using the PKCS11SecretKeyManager tool, and import the wrapped key into the configuration service using the config-ui (or the ConfigManage command line) tool. If you export/wrap the keys using the PKCS11SecretKeyManager tool, the configuration in the below paragraphs is not necessary.
 
-In order to do this, the config-ui web application will need access to the PKCS11 token.  The token is configured similarly to the way it is configured [gateway](https://directprojectjavari.github.io/gateway/PKCS11Configuration). To configure the token, you will need to add properties to the bootstrap.properties file in the <tomcat home>/webapps/config-ui/WEB-INF/classes/properties directory.  Once these properties are set, you will need to restart tomcat.
+In order to do this, the config-ui web application will need access to the PKCS11 token.  The token is configured similarly to the way it is configured [gateway](https://directprojectjavari.github.io/gateway/PKCS11Configuration). To configure the token, you will need to add properties to the bootstrap.properties file in the `<tomcat home>`/webapps/config-ui/WEB-INF/classes/properties directory.  Once these properties are set, you will need to restart tomcat.
 
-Similar to the PKCS11SecretKeyManager tool, you will need to make sure all native libaries are properly installed. If the token implements its own JCE provider, you need to copy the vendor's jar file to the <tomcat home>/webapps/config-ui/WEB-INF/lib directory.
+Similar to the PKCS11SecretKeyManager tool, you will need to make sure all native libaries are properly installed. If the token implements its own JCE provider, you need to copy the vendor's jar file to the `<tomcat home>`/webapps/config-ui/WEB-INF/lib directory.
 
 ##  Gateway and Agent Configuration
 
@@ -96,7 +100,7 @@ To properly unwrap the keys and utilize the token, the gateway (and subsequently
 
 You will again need to ensure that the appropriate token native libraries are installed and any jar files copied to the following location:
 
-* <DIRECTHOME>/james-jpa-guice-3.2.0/james-server-jpa-guice.lib
+* `<DIRECTHOME>`/james-jpa-guice-3.2.0/james-server-jpa-guice.lib
 
 ## Example Workflow for Creating and Importing Certificates and Keys
 
