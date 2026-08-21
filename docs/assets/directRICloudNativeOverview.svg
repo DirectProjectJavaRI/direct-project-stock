@@ -1,0 +1,239 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 920" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1a2733" flood-opacity="0.22"/>
+    </filter>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7d3c98"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2471a3"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b9770e"/>
+    </marker>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5d6d7e"/>
+    </marker>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="1" y="1" width="1438" height="918" rx="12" fill="#ffffff" stroke="#d7dde3" stroke-width="1.5"/>
+
+  <!-- Figure title -->
+  <text x="720" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2937">Cloud-Native HISP Deployment — Topology Overview</text>
+
+  <!-- ================= ZONE BANDS ================= -->
+  <!-- Public Network -->
+  <rect x="0" y="52" width="260" height="50" fill="#b9770e"/>
+  <text x="130" y="83" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" letter-spacing="0.5">PUBLIC NETWORK</text>
+  <rect x="0" y="102" width="260" height="706" fill="#fdf2e3"/>
+
+  <!-- Internal HISP Network -->
+  <rect x="260" y="52" width="920" height="50" fill="#2c3e50"/>
+  <text x="720" y="83" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" letter-spacing="0.5">INTERNAL HISP NETWORK</text>
+  <rect x="260" y="102" width="920" height="706" fill="#eef2f6"/>
+
+  <!-- HISP Consumer Network -->
+  <rect x="1180" y="52" width="260" height="50" fill="#1e8449"/>
+  <text x="1310" y="83" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" letter-spacing="0.5">HISP CONSUMER NETWORK</text>
+  <rect x="1180" y="102" width="260" height="706" fill="#eafaf1"/>
+
+  <!-- Zone divider lines -->
+  <line x1="260" y1="102" x2="260" y2="808" stroke="#c3cad2" stroke-width="1.5"/>
+  <line x1="1180" y1="102" x2="1180" y2="808" stroke="#c3cad2" stroke-width="1.5"/>
+
+  <!-- ================= RABBITMQ QUEUE/TOPIC CONNECTORS ================= -->
+  <!-- All amber connectors below run over RabbitMQ (Spring Cloud Stream / AMQP). Each is
+       labeled with its actual destination (queue/topic) name from the service's application.yml. -->
+
+  <!-- SMTP/MQ Gateway -> STA: ingests external inbound SMTP -->
+  <path d="M414,210 L414,260 L650,260 L650,308" fill="none" stroke="#b9770e" stroke-width="2.25" marker-end="url(#arrowAmber)"/>
+  <!-- James -> STA: re-injects generated MDN/DSN messages for outbound processing -->
+  <path d="M1026,210 L1026,260 L790,260 L790,308" fill="none" stroke="#b9770e" stroke-width="2.25" marker-end="url(#arrowAmber)"/>
+  <!-- XD -> STA: ingests EHR-submitted outbound message -->
+  <line x1="926" y1="346" x2="820" y2="346" stroke="#b9770e" stroke-width="2.25" marker-end="url(#arrowAmber)"/>
+  <line x1="873" y1="346" x2="873" y2="296" stroke="#b9770e" stroke-width="1.5"/>
+  <rect x="497" y="238" width="176" height="17" rx="4" fill="#fffaf0" stroke="#e4b467" stroke-width="1"/>
+  <text x="585" y="250.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#8a5a05">direct-smtp-mq-gateway</text>
+  <rect x="807" y="238" width="176" height="17" rx="4" fill="#fffaf0" stroke="#e4b467" stroke-width="1"/>
+  <text x="895" y="250.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#8a5a05">direct-smtp-mq-gateway</text>
+  <rect x="805" y="279" width="150" height="17" rx="4" fill="#fffaf0" stroke="#e4b467" stroke-width="1"/>
+  <text x="880" y="291.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#8a5a05">direct-smtp-mq-gateway</text>
+
+  <!-- STA -> Message Monitor: async tx/notification status -->
+  <line x1="720" y1="308" x2="720" y2="210" stroke="#b9770e" stroke-width="2.25" marker-end="url(#arrowAmber)"/>
+  <rect x="648" y="277" width="145" height="17" rx="4" fill="#fffaf0" stroke="#e4b467" stroke-width="1"/>
+  <text x="720.5" y="289.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#8a5a05">direct-tx-monitoring</text>
+
+  <!-- James -> Message Monitor: async tx/notification status -->
+  <line x1="926" y1="172" x2="820" y2="172" stroke="#b9770e" stroke-width="2.25" marker-end="url(#arrowAmber)"/>
+  <line x1="873" y1="172" x2="873" y2="222" stroke="#b9770e" stroke-width="1.5"/>
+  <rect x="798" y="214" width="150" height="17" rx="4" fill="#fffaf0" stroke="#e4b467" stroke-width="1"/>
+  <text x="873" y="226.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#8a5a05">direct-tx-monitoring</text>
+
+  <!-- STA -> James: last-mile mailbox delivery -->
+  <path d="M820,320 L890,320 L890,268 L1080,268 L1080,210" fill="none" stroke="#b9770e" stroke-width="2.25" marker-end="url(#arrowAmber)"/>
+  <rect x="907" y="259" width="200" height="15" rx="4" fill="#fffaf0" stroke="#e4b467" stroke-width="1"/>
+  <text x="1007" y="270.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#8a5a05">direct-sta-last-mile-delivery</text>
+
+  <!-- ================= CONNECTORS (behind boxes) ================= -->
+  <!-- External inbound arrows -->
+  <line x1="40" y1="172" x2="308" y2="172" stroke="#7d3c98" stroke-width="2.25" marker-end="url(#arrowPurple)"/>
+  <text x="174" y="162" text-anchor="middle" font-size="12.5" fill="#7d3c98" font-weight="600">SMTP</text>
+
+  <line x1="40" y1="346" x2="308" y2="346" stroke="#5d6d7e" stroke-width="2.25" marker-end="url(#arrowGray)"/>
+  <text x="174" y="336" text-anchor="middle" font-size="12.5" fill="#5d6d7e" font-weight="600">TCP/UDP</text>
+
+  <line x1="1400" y1="172" x2="1132" y2="172" stroke="#7d3c98" stroke-width="2.25" marker-end="url(#arrowPurple)"/>
+  <text x="1266" y="162" text-anchor="middle" font-size="12.5" fill="#7d3c98" font-weight="600">SMTP / POP / IMAP</text>
+
+  <line x1="1400" y1="346" x2="1132" y2="346" stroke="#2471a3" stroke-width="2.25" marker-end="url(#arrowBlue)"/>
+  <text x="1266" y="336" text-anchor="middle" font-size="12.5" fill="#2471a3" font-weight="600">HTTP(S)</text>
+
+  <line x1="1400" y1="470" x2="1132" y2="470" stroke="#2471a3" stroke-width="2.25" marker-end="url(#arrowBlue)"/>
+  <text x="1266" y="460" text-anchor="middle" font-size="12.5" fill="#2471a3" font-weight="600">HTTP(S)</text>
+
+  <!-- Internal fixed connectors -->
+  <line x1="720" y1="384" x2="720" y2="426" stroke="#2471a3" stroke-width="2.25" marker-end="url(#arrowBlue)"/>
+  <text x="748" y="408" font-size="12.5" fill="#2471a3" font-weight="600">HTTP(S)</text>
+
+  <path d="M414,384 L414,460 L614,460" fill="none" stroke="#2471a3" stroke-width="2.25" marker-end="url(#arrowBlue)"/>
+  <text x="470" y="450" text-anchor="middle" font-size="12.5" fill="#2471a3" font-weight="600">HTTP(S)</text>
+
+  <line x1="920" y1="470" x2="826" y2="470" stroke="#2471a3" stroke-width="2.25" marker-end="url(#arrowBlue)"/>
+  <text x="873" y="460" text-anchor="middle" font-size="12.5" fill="#2471a3" font-weight="600">HTTP(S)</text>
+
+  <!-- NEW: STA -> Remote HISP, via the dedicated outbound retry queue, then real SMTP -->
+  <path d="M620,346 L567,346 L567,650 L231,650" fill="none" stroke="#7d3c98" stroke-width="2.5" marker-end="url(#arrowPurple)"/>
+  <rect x="298" y="608" width="204" height="17" rx="4" fill="#fbf3fb" stroke="#c9a0d1" stroke-width="1"/>
+  <text x="400" y="620.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#5e2a72">direct-remote-delivery-process</text>
+  <text x="399" y="644" text-anchor="middle" font-size="12.5" fill="#7d3c98" font-weight="700">SMTP (Outbound)</text>
+
+  <!-- NEW: STA -> XDR Document Recipient, via the dedicated outbound retry queue, then real HTTP(S) -->
+  <path d="M820,365 L873,365 L873,650 L1195,650" fill="none" stroke="#2471a3" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <rect x="930" y="608" width="188" height="17" rx="4" fill="#eef6fc" stroke="#a9cbe4" stroke-width="1"/>
+  <text x="1024" y="620.5" text-anchor="middle" font-size="10.5" font-family="'SF Mono', Consolas, monospace" fill="#134a72">direct-xd-delivery-process</text>
+  <text x="1031" y="644" text-anchor="middle" font-size="12.5" fill="#2471a3" font-weight="700">HTTP(S) — XDR Push</text>
+
+  <!-- STA connection junction dots -->
+  <circle cx="650" cy="308" r="3" fill="#2c3e50"/>
+  <circle cx="720" cy="308" r="3" fill="#2c3e50"/>
+  <circle cx="790" cy="308" r="3" fill="#2c3e50"/>
+  <circle cx="820" cy="320" r="3" fill="#2c3e50"/>
+  <circle cx="820" cy="346" r="3" fill="#2c3e50"/>
+  <circle cx="820" cy="365" r="3" fill="#2c3e50"/>
+  <circle cx="620" cy="346" r="3" fill="#2c3e50"/>
+  <circle cx="720" cy="384" r="3" fill="#2c3e50"/>
+
+  <!-- ================= COMPONENT BOXES ================= -->
+  <!-- helper style: white fill, slate stroke, colored top accent, title + subtitle -->
+
+  <!-- SMTP/MQ Gateway (col1,row1) -->
+  <g filter="url(#cardShadow)">
+    <rect x="314" y="134" width="200" height="76" rx="10" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+    <rect x="314" y="134" width="200" height="6" rx="3" fill="#b9770e"/>
+  </g>
+  <text x="414" y="168" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">SMTP/MQ Gateway</text>
+  <text x="414" y="187" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">Inbound SMTP Relay</text>
+
+  <!-- Message Monitor (col2,row1) -->
+  <g filter="url(#cardShadow)">
+    <rect x="620" y="134" width="200" height="76" rx="10" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+    <rect x="620" y="134" width="200" height="6" rx="3" fill="#2c3e50"/>
+  </g>
+  <text x="720" y="168" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">Message Monitor</text>
+  <text x="720" y="187" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">Delivery Tracking</text>
+
+  <!-- James (col3,row1) -->
+  <g filter="url(#cardShadow)">
+    <rect x="926" y="134" width="200" height="76" rx="10" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+    <rect x="926" y="134" width="200" height="6" rx="3" fill="#1e8449"/>
+  </g>
+  <text x="1026" y="168" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">James</text>
+  <text x="1026" y="187" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">Mail Server (SMTP/POP/IMAP)</text>
+
+  <!-- DNS Server (col1,row2) -->
+  <g filter="url(#cardShadow)">
+    <rect x="314" y="308" width="200" height="76" rx="10" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+    <rect x="314" y="308" width="200" height="6" rx="3" fill="#b9770e"/>
+  </g>
+  <text x="414" y="342" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">DNS Server</text>
+  <text x="414" y="361" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">Direct DNS Services</text>
+
+  <!-- STA (Agent) (col2,row2) -->
+  <g filter="url(#cardShadow)">
+    <rect x="620" y="308" width="200" height="76" rx="10" fill="#eef6fc" stroke="#2c3e50" stroke-width="2"/>
+    <rect x="620" y="308" width="200" height="6" rx="3" fill="#2c3e50"/>
+  </g>
+  <text x="720" y="342" text-anchor="middle" font-size="15.5" font-weight="700" fill="#1f2937">STA (Agent)</text>
+  <text x="720" y="361" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">Security &amp; Trust Agent</text>
+
+  <!-- XD (col3,row2) -->
+  <g filter="url(#cardShadow)">
+    <rect x="926" y="308" width="200" height="76" rx="10" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+    <rect x="926" y="308" width="200" height="6" rx="3" fill="#1e8449"/>
+  </g>
+  <text x="1026" y="342" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">XD</text>
+  <text x="1026" y="361" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">XDR Gateway</text>
+
+  <!-- Config Service (col2,row3) -->
+  <g filter="url(#cardShadow)">
+    <rect x="620" y="432" width="200" height="76" rx="10" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+    <rect x="620" y="432" width="200" height="6" rx="3" fill="#2c3e50"/>
+  </g>
+  <text x="720" y="466" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">Config Service</text>
+  <text x="720" y="485" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">Configuration API</text>
+
+  <!-- Config UI (col3,row3) -->
+  <g filter="url(#cardShadow)">
+    <rect x="926" y="432" width="200" height="76" rx="10" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+    <rect x="926" y="432" width="200" height="6" rx="3" fill="#1e8449"/>
+  </g>
+  <text x="1026" y="466" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">Config UI</text>
+  <text x="1026" y="485" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">Admin Web Console</text>
+
+  <!-- ================= NEW EXTERNAL ENDPOINTS ================= -->
+  <!-- Remote HISP (Public zone) -->
+  <g filter="url(#cardShadow)">
+    <rect x="35" y="608" width="190" height="84" rx="10" fill="#fbfbfb" stroke="#b9770e" stroke-width="2" stroke-dasharray="7,4"/>
+  </g>
+  <text x="130" y="644" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">Remote HISP</text>
+  <text x="130" y="663" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">External Direct HISP</text>
+  <text x="130" y="680" text-anchor="middle" font-size="10.5" fill="#9aa2ab">(outside this deployment)</text>
+
+  <!-- XDR Document Recipient (Consumer zone) -->
+  <g filter="url(#cardShadow)">
+    <rect x="1190" y="608" width="220" height="84" rx="10" fill="#fbfbfb" stroke="#1e8449" stroke-width="2" stroke-dasharray="7,4"/>
+  </g>
+  <text x="1300" y="638" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2937">XDR Document Recipient</text>
+  <text x="1300" y="657" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b7280">EHR Edge System</text>
+  <text x="1300" y="674" text-anchor="middle" font-size="10.5" fill="#9aa2ab">(outside this deployment)</text>
+
+  <!-- ================= LEGEND ================= -->
+  <rect x="195" y="826" width="1050" height="72" rx="8" fill="#fafbfc" stroke="#d7dde3" stroke-width="1.25"/>
+  <text x="720" y="843" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4a5568" letter-spacing="0.5">LEGEND</text>
+
+  <line x1="290" y1="862" x2="322" y2="862" stroke="#b9770e" stroke-width="3"/>
+  <text x="328" y="866" font-size="12" fill="#374151">AMQP (Message Broker)</text>
+
+  <line x1="290" y1="886" x2="322" y2="886" stroke="#5d6d7e" stroke-width="3"/>
+  <text x="328" y="890" font-size="12" fill="#374151">TCP/UDP</text>
+
+  <line x1="500" y1="862" x2="532" y2="862" stroke="#2471a3" stroke-width="3"/>
+  <text x="538" y="866" font-size="12" fill="#374151">HTTP(S)</text>
+
+  <line x1="500" y1="886" x2="532" y2="886" stroke="#7d3c98" stroke-width="3"/>
+  <text x="538" y="890" font-size="12" fill="#374151">SMTP / POP / IMAP</text>
+
+  <rect x="720" y="855" width="26" height="14" rx="3" fill="#ffffff" stroke="#4a5568" stroke-width="1.5"/>
+  <text x="752" y="866" font-size="12" fill="#374151">Internal component</text>
+
+  <rect x="720" y="879" width="26" height="14" rx="3" fill="#fbfbfb" stroke="#4a5568" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="752" y="890" font-size="12" fill="#374151">External system (outside this deployment)</text>
+
+  <rect x="930" y="855" width="130" height="15" rx="4" fill="#fffaf0" stroke="#e4b467" stroke-width="1"/>
+  <text x="995" y="866" text-anchor="middle" font-size="9.5" font-family="'SF Mono', Consolas, monospace" fill="#8a5a05">queue-or-topic-name</text>
+  <text x="1067" y="866" font-size="12" fill="#374151">= queue/topic name</text>
+
+</svg>
