@@ -29,14 +29,17 @@ The following is the list of micro-services making up the core of the reference 
 ## Topology Overview
 
 The following diagram illustrates the micro-services in the cloud native deployment model, the network zones they sit in, and how they communicate
-with each other, including the RabbitMQ message broker used for asynchronous delivery between services. For simplicity, the database backing each
-service has been omitted from the diagram.
+with each other. Every connection that runs over the RabbitMQ message broker is labeled with the actual queue/topic (destination) name each
+service is configured to use in its `application.yml`, so it's clear which service publishes to which queue and which service consumes it. For
+simplicity, the database backing each service has been omitted from the diagram.
 
-![Topology diagram of the Cloud Native HISP deployment, showing the Public Network, Internal HISP Network, and HISP Consumer Network zones, the micro-services within them, the RabbitMQ message broker, and the outbound SMTP and XDR flows from the STA](assets/directRICloudNativeOverview.svg)
+![Topology diagram of the Cloud Native HISP deployment, showing the Public Network, Internal HISP Network, and HISP Consumer Network zones, the micro-services within them, the labeled RabbitMQ queues/topics connecting them, and the outbound SMTP and XDR flows from the STA](assets/directRICloudNativeOverview.svg)
 
-Two flows are worth calling out beyond the request/response paths shown for each service: the STA relays outgoing Direct messages via SMTP to a
-remote HISP on the public network, and it can also deliver an incoming Direct message directly to an EHR edge system over HTTP(S) using an XDR
-push, when the recipient is configured for direct XDR delivery rather than a mailbox in James.
+The STA sits at the center of the messaging pipeline: `direct-smtp-mq-gateway` is the single entry point into the STA, fed by the SMTP/MQ Gateway
+(external inbound SMTP), XD (EHR-submitted outbound messages), and James (generated MDN/DSN messages re-entering the pipeline). From there the STA
+routes a message to one of three places: `direct-sta-last-mile-delivery` to James for mailbox delivery, `direct-remote-delivery-process` for
+outbound SMTP relay to a remote HISP on the public network, or `direct-xd-delivery-process` for an outbound HTTP(S) XDR push to an EHR edge system's
+XDR document recipient. The STA and James also each publish tx/notification status to Message Monitor via `direct-tx-monitoring`.
 
 It's worth noting early on that, unlike the legacy deployment model, the cloud native model utilizes two different SMTP servers: an externally facing server for
 receiving messages from other HISPs, and an internal server for last-mile delivery, message storage at rest, and sending outbound messages.
