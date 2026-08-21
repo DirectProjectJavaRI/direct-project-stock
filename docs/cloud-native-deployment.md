@@ -28,11 +28,15 @@ The following is the list of micro-services making up the core of the reference 
 
 ## Topology Overview
 
-The following rough diagram illustrates the micro-services in the cloud native deployment model and how they communicate with each other.
-For simplicity, supporting services like RabbitMQ and databases have been removed from the diagram, but they generally exist within
-the internal HISP network.
+The following diagram illustrates the micro-services in the cloud native deployment model, the network zones they sit in, and how they communicate
+with each other, including the RabbitMQ message broker used for asynchronous delivery between services. For simplicity, the database backing each
+service has been omitted from the diagram.
 
-![directRICloudNativeOverview](assets/directRICloudNativeOverview.png)
+![Topology diagram of the Cloud Native HISP deployment, showing the Public Network, Internal HISP Network, and HISP Consumer Network zones, the micro-services within them, the RabbitMQ message broker, and the outbound SMTP and XDR flows from the STA](assets/directRICloudNativeOverview.svg)
+
+Two flows are worth calling out beyond the request/response paths shown for each service: the STA relays outgoing Direct messages via SMTP to a
+remote HISP on the public network, and it can also deliver an incoming Direct message directly to an EHR edge system over HTTP(S) using an XDR
+push, when the recipient is configured for direct XDR delivery rather than a mailbox in James.
 
 It's worth noting early on that, unlike the legacy deployment model, the cloud native model utilizes two different SMTP servers: an externally facing server for
 receiving messages from other HISPs, and an internal server for last-mile delivery, message storage at rest, and sending outbound messages.
