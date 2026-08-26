@@ -6,9 +6,11 @@ title: Enhanced Private Key Security
 
 Although version 4.0 of Bare Metal added additional protection for private keys, it only protected keys at rest. When keys were "activated," they were loaded into the agent's process memory completely unencrypted. Some deployments may lock down access to the agent tightly enough that this is acceptable, but it still leaves the keys vulnerable to any entity with access to the agent's process memory.
 
-With governmental and other high-security agencies now implementing Direct, a higher level of key protection is required, not only by the agencies themselves, but by the systems that they rely upon (i.e., your system). A common approach to the private key protection problem is to utilize a PKCS11 token, such as a NIST-certified hardware security module, where the keys are only activated (i.e., utilized for cryptographic operations in their unencrypted form) inside the token. Beginning with version 5.0, Bare Metal supports PKCS11 tokens using this model.
+With governmental and other high-security agencies now implementing Direct, a higher level of key protection is required — not only by the agencies themselves, but by the systems they rely upon (i.e., your system). A common approach to the private key protection problem is to use a PKCS11 (Public Key Cryptography Standard #11) token, such as a NIST-certified hardware security module (HSM), where the keys are only activated (i.e., used for cryptographic operations in their unencrypted form) inside the token. Beginning with version 5.0, Bare Metal supports PKCS11 tokens using this model.
 
 **NOTE:** The following is an optional configuration; Bare Metal will still operate in the same manner as version 4.0 if the following configuration options are not implemented. If enhanced key security is implemented, any keys installed before implementation will continue to operate and function as they did in previous versions (the system is backward compatible). If you wish to use enhanced key security on previously installed keys, you will need to remove them and reimport them.
+
+**NOTE:** The underlying wrap/unwrap concepts, PKCS11 token selection guidance, and the PKCS11SecretKeyManager tool below apply the same way regardless of deployment model. How each service is actually configured to talk to the PKCS11 token — the property names and where they're set — differs between the [Cloud Native](cloud-native-deployment) and [Legacy](legacy-deployment) deployment models, and is called out separately in the [Cloud Native Deployment Model](#cloud-native-deployment-model) and [Legacy Deployment Model](#legacy-deployment-model) sections below.
 
 ## Key-at-Rest Protection
 
@@ -20,7 +22,7 @@ Using the wrapping and unwrapping model, the configuration service is no longer 
 
 ## PKCS11 Token Selection
 
-There are many PKCS11 options available on the market; however, it is recommended that you utilize a module that is NIST certified. Additionally, it MUST have support for the Java PKCS11 model and optimally support (though not required) wrapping private keys with an AES128 secret key. Value-adds to look for are good documentation, key management tooling, random number generation, and access from multiple nodes for high availability and scalability.
+There are many PKCS11 options available on the market; however, we recommend using a module that is NIST-certified. Additionally, it MUST support the Java PKCS11 model and, optimally (though not required), support wrapping private keys with an AES128 secret key. Value-adds to look for are good documentation, key management tooling, random number generation, and access from multiple nodes for high availability and scalability.
 
 ## Key Encryption Key
 
@@ -66,7 +68,7 @@ name=SafeNeteTokenPro
 library=/usr/local/lib/libeTPkcs11.dylib
 ```
 
-Once you have the proper configuration completed, you need to make sure you have all native libraries and jar files in the proper location. Most likely, the native libraries will be installed when you run the installation software package that came with your token. For tokens that utilize the *sun.security.pkcs11.SunPKCS11* JCE provider, you need to find the location of the native library that implements the Java PKCS11 bridge. For tokens that implement their own JCE providers, they will most likely have a combination of native libraries and a jar file. You will need to add the jar file to the Bare Metal /tools/lib directory.
+Once you have the proper configuration completed, you need to make sure you have all native libraries and JAR files in the proper location. Most likely, the native libraries will be installed when you run the installation software package that came with your token. For tokens that utilize the *sun.security.pkcs11.SunPKCS11* JCE provider, you need to find the location of the native library that implements the Java PKCS11 bridge. For tokens that implement their own JCE providers, they will most likely have a combination of native libraries and a JAR file. You will need to add the JAR file to the Bare Metal /tools/lib directory.
 
 The following is an example command to launch the tool for a token that uses the *sun.security.pkcs11.SunPKCS11* JCE provider:
 
@@ -86,25 +88,52 @@ Once you launch the tool and enter the correct pin/password, creating a random s
 CreateRandomSecretKey privateKeyWrapperSecrets
 ```
 
-## Config UI Configuration
+## Cloud Native Deployment Model
 
-When importing unencrypted keys with enhanced key protection, the config-ui can wrap unencrypted keys before sending them to the configuration service. **NOTE:** This is not the preferred method when using key wrapping. A more appropriate approach is to generate the keys on the HSM, export/wrap the keys using the PKCS11SecretKeyManager tool, and import the wrapped key into the configuration service using the config-ui (or the ConfigManage command-line tool). If you export/wrap the keys using the PKCS11SecretKeyManager tool, the configuration in the paragraphs below is not necessary.
+When importing unencrypted keys with enhanced key protection, the config-ui can wrap unencrypted keys before sending them to the configuration service. **NOTE:** This is not the preferred method when using key wrapping. A more appropriate approach is to generate the keys on the HSM, export/wrap the keys using the PKCS11SecretKeyManager tool, and import the wrapped key into the configuration service using the config-ui (or the [Configuration Manager](cloud-native-deployment#configuration-manager-tool) command-line tool). If you export/wrap the keys using the PKCS11SecretKeyManager tool, the configuration below is not necessary.
 
-In order to do this, the config-ui web application will need access to the PKCS11 token. The token is configured similarly to the way it is configured for the [gateway](https://directprojectjavari.github.io/gateway/PKCS11Configuration). To configure the token, you will need to add properties to the bootstrap.properties file in the `<tomcat home>`/webapps/config-ui/WEB-INF/classes/properties directory. Once these properties are set, you will need to restart Tomcat.
+### Config Service and Config UI Configuration
 
-Similar to the PKCS11SecretKeyManager tool, you will need to make sure all native libraries are properly installed. If the token implements its own JCE provider, you need to copy the vendor's jar file to the `<tomcat home>`/webapps/config-ui/WEB-INF/lib directory.
+In order to do the wrapping in the config-ui itself, both the Configuration Service and the Configuration UI web application need access to the PKCS11 token — the Configuration Service to unwrap keys on read, and the Configuration UI to wrap keys on import.
 
-## Gateway and Agent Configuration
+In the [Cloud Native deployment model](cloud-native-deployment), the Configuration Service and Configuration UI are each independent Spring Boot micro-services, and each binds its own `direct.config.keystore.*` properties to select and configure a `KeyStoreProtectionManager`:
 
-To properly unwrap the keys and utilize the token, the gateway (and subsequently the agent) also needs to be configured. Documentation for configuring PKCS11 tokens for the gateway is [here](https://directprojectjavari.github.io/gateway/PKCS11Configuration).
+* Set `direct.config.keystore.hsmpresent=true` to use a PKCS11 token, and fill in the PKCS11 connection settings (`keyStorePin`, `keyStoreType`, `keyStoreSourceAsString`, `keyStoreProviderName`, `keyStorePassPhraseAlias`, `privateKeyPassPhraseAlias`, `initOnStart`).
+* Set `direct.config.keystore.bootstrapmanager=true` (Configuration Service) — or simply leave `hsmpresent` unset/`false` (Configuration UI) — to fall back to the software passphrase-based manager (`keyStorePassPhrase`/`privateKeyPassPhrase`) instead of a PKCS11 token.
 
-You will again need to ensure that the appropriate token native libraries are installed and any jar files copied to the following location:
+See the [Configuration Service](cloud-native-deployment#configuration-service) and [Configuration UI](cloud-native-deployment#configuration-ui) settings tables for the full property list and defaults. As with any other setting, override these in the `application.yml` placed in each service's own directory — see [Modify Service Default Configuration](cloud-native-deployment#modify-service-default-configuration).
+
+If your PKCS11 token ships its own JCE provider (rather than using the Sun `SunPKCS11` provider), that provider JAR needs to be on the Configuration Service's and Configuration UI's classpath. Since these are Spring Boot fat JARs, there is no `WEB-INF/lib`-style directory to drop the JAR into — instead follow [Adding External Jars to a Service's Classpath](cloud-native-deployment#adding-external-jars-to-a-services-classpath-eg-pkcs11-providers) in the Cloud Native deployment document, launching each service via `PropertiesLauncher` with `loader.path` pointing at a `lib` directory containing the vendor JAR.
+
+### Security and Trust Agent Configuration
+
+To properly unwrap the keys and utilize the token, the security and trust agent (STA) also needs to be configured. The STA is its own micro-service in the Cloud Native model (unlike the Legacy model, where it runs inside the James process — see below), and binds `direct.gateway.keystore.*` properties the same way the Configuration Service does: `hsmpresent`, and either the PKCS11 connection settings or the software `keyStorePassPhrase`/`privateKeyPassPhrase` fallback. See the [Security and Trust Agent](cloud-native-deployment#security-and-trust-agent) settings table for the full property list and defaults, and override them in the `application.yml` in the STA's own service directory.
+
+If your token ships its own JCE provider JAR, add it to the STA's classpath using the same [PropertiesLauncher / loader.path](cloud-native-deployment#adding-external-jars-to-a-services-classpath-eg-pkcs11-providers) approach described above — the STA's `Start-Class` is `org.nhindirect.stagent.boot.STAApplication`.
+
+Apache James itself does not participate in enhanced key security in the Cloud Native model — it no longer hosts the STA, and its own `james.server.*.keystore` settings only configure TLS for the IMAP/POP3/SMTP protocol listeners, not Direct message signing/encryption. No PKCS11 configuration is needed for the James micro-service.
+
+## Legacy Deployment Model
+
+When importing unencrypted keys with enhanced key protection, the config-ui can wrap unencrypted keys before sending them to the configuration service. **NOTE:** This is not the preferred method when using key wrapping. A more appropriate approach is to generate the keys on the HSM, export/wrap the keys using the PKCS11SecretKeyManager tool, and import the wrapped key into the configuration service using the config-ui (or the ConfigMgmtConsole command-line tool). If you export/wrap the keys using the PKCS11SecretKeyManager tool, the configuration below is not necessary.
+
+### Config UI Configuration
+
+In order to do the wrapping in the config-ui itself, the config-ui web application will need access to the PKCS11 token. In the [Legacy deployment model](legacy-deployment), the token is configured similarly to the way it is configured for the [gateway](https://directprojectjavari.github.io/gateway/PKCS11Configuration). To configure the token, you will need to add properties to the bootstrap.properties file in the `<tomcat home>`/webapps/config-ui/WEB-INF/classes/properties directory. Once these properties are set, you will need to restart Tomcat.
+
+Similar to the PKCS11SecretKeyManager tool, you will need to make sure all native libraries are properly installed. If the token implements its own JCE provider, you need to copy the vendor's JAR file to the `<tomcat home>`/webapps/config-ui/WEB-INF/lib directory.
+
+### Gateway and Agent Configuration
+
+To properly unwrap the keys and utilize the token, the gateway (and subsequently the agent) also needs to be configured. In the Legacy deployment model, the security and trust agent runs inside the Apache James process, so its PKCS11 token configuration lives alongside James's own configuration rather than in a separate service. Documentation for configuring PKCS11 tokens for the gateway/agent is [here](https://directprojectjavari.github.io/gateway/PKCS11Configuration).
+
+You will again need to ensure that the appropriate token native libraries are installed and any JAR files copied to the following location:
 
 * `<DIRECTHOME>`/james-jpa-guice-3.2.0/james-server-jpa-guice.lib
 
 ## Example Workflow for Creating and Importing Certificates and Keys
 
-The preferred methodology for creating and importing keys is to generate the public/private key pair on the HSM and import the wrapped private key, along with its certificate, into the configuration service using the config-ui or the ConfigManager command-line tool. Going from creating a public/private key pair to ultimately having a signed certificate from a CA takes a few steps; these steps are outlined below and utilize the PKCS11SecretKeyManager tool. These steps assume that you have properly configured the PKCS11SecretKeyManager tool to communicate with your HSM using the steps in the PKCS11SecretKeyManager section of this document.
+The preferred methodology for creating and importing keys is to generate the public/private key pair on the HSM and import the wrapped private key, along with its certificate, into the configuration service using the config-ui or your deployment model's command-line configuration tool ([Configuration Manager](cloud-native-deployment#configuration-manager-tool) for Cloud Native, ConfigMgmtConsole for Legacy). Going from creating a public/private key pair to ultimately having a signed certificate from a certificate authority (CA) takes a few steps; these steps are outlined below and utilize the PKCS11SecretKeyManager tool. These steps assume that you have properly configured the PKCS11SecretKeyManager tool to communicate with your HSM using the steps in the PKCS11SecretKeyManager section of this document.
 
 #### Secret Key Creation
 
@@ -152,11 +181,11 @@ The next step is to export the private key from the system. This step will utili
 EXPORTPRIVATEKEY directSecEmailDigSig privateKeyWrapperSecret
 ```
 
-Once you execute this command, the tool will create a file containing the wrapped private key. You will import this wrapped key file, along with the signed certificate from the previous section, into the configuration service utilizing either the config-ui or the ConfigManager command-line tool.
+Once you execute this command, the tool will create a file containing the wrapped private key. You will import this wrapped key file, along with the signed certificate from the previous section, into the configuration service utilizing either the config-ui or your deployment model's command-line configuration tool.
 
 #### Importing the Wrapped Key and Certificate
 
-Now that you have a wrapped key and signed certificate, it's time to import the key and certificate into the system for use by the security and trust agent and Direct message exchange. You have two ways to import the files. If you are using the config-ui, starting with version 5.1 of the stock assembly, you can import the wrapped key and certificate files into the system using the config-ui's certificate tab. If you prefer to use the ConfigMgmtConsole command-line tool, you can import the wrapped private key file and certificate file into the system using the ADDPRIVATECERTWITHWRAPPEDKEY command. The example command below imports a certificate file and wrapped key into the system.
+Now that you have a wrapped key and signed certificate, it's time to import the key and certificate into the system for use by the security and trust agent and Direct message exchange. You have two ways to import the files. If you are using the config-ui, starting with version 5.1 of the stock assembly, you can import the wrapped key and certificate files into the system using the config-ui's certificate tab. If you prefer to use the command line, you can import the wrapped private key file and certificate file into the system using the `AddPrivateCertWithWrappedKey` command in [Configuration Manager](cloud-native-deployment#configuration-manager-tool) (Cloud Native) or `ADDPRIVATECERTWITHWRAPPEDKEY` in ConfigMgmtConsole (Legacy) — the command is the same either way, just the casing convention differs by tool. The example command below imports a certificate file and wrapped key into the system.
 
 ```
 ADDPRIVATECERTWITHWRAPPEDKEY directSecureHealthEmail_encCert.der directSecEmailDigSig-privKey.der
