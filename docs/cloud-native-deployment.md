@@ -67,10 +67,10 @@ RabbitMQ can be deployed several ways, from multiple sources, using both commerc
 for installing a variety of options. For simplicity, one easy option is to deploy RabbitMQ using a Docker container with the following command:
 
 ```
-docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
+docker run -d --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
 ```
 
-This runs RabbitMQ with both the broker and management components, using a username/password of guest/guest (the default credentials used by the Direct micro-services).
+This runs RabbitMQ with both the broker and management components, using a username/password of guest/guest (the default credentials used by the Direct micro-services). The `-d` flag runs the container in the background (detached) rather than tying up your terminal in the foreground.
 
 ## Download Micro-service Binaries
 
