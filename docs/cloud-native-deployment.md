@@ -27,14 +27,12 @@ The following is the list of micro-services making up the core of the reference 
 * Apache James (for message sending/retrieving and last-mile delivery only)
 * XD
 
-The DNS Service is a lightweight, authoritative-only DNS server that publishes the DNS records — most importantly the CERT records used for Direct certificate discovery — managed in the Configuration Service. It reads those records from the Configuration Service's REST API and answers DNS queries over UDP/TCP. Unlike the other micro-services it does not participate in the RabbitMQ messaging pipeline, so it is not shown in the topology diagram below; it typically sits in the public network so that external HISPs and mail servers can resolve the certificate and MX records for your domains.
-
 ## Topology Overview
 
 The following diagram illustrates the micro-services in the cloud native deployment model, the network zones they sit in, and how they communicate
 with each other. Every connection that runs over the RabbitMQ message broker is labeled with the actual queue/topic (destination) name each
 service is configured to use in its `application.yml`, so it's clear which service publishes to which queue and which service consumes it. For
-simplicity, the database backing each service has been omitted from the diagram.
+simplicity, the database backing each service has been omitted from the diagram, as is the DNS Service, which reads its records from the Configuration Service's REST API and does not participate in the message broker pipeline.
 
 ![Topology diagram of the Cloud Native HISP deployment, showing the Public Network, Internal HISP Network, and HISP Consumer Network zones, the micro-services within them, the labeled RabbitMQ queues/topics connecting them, and the outbound SMTP and XDR flows from the STA](assets/directRICloudNativeOverview.svg)
 
