@@ -267,7 +267,9 @@ each directory. If you need to debug the output interactively, you can run `./se
 
 Once the services are up and running, you can perform a preliminary test to confirm the system is working by accessing the Config UI at `http://<server IP>:8080/`.
 
-The DNS Service listens on UDP/TCP port `53` by default, which is a privileged port on most operating systems. Either start it with sufficient privileges to bind low ports (run as `root`, or grant the Java executable the `CAP_NET_BIND_SERVICE` capability on Linux), or set `direct.dns.binding.port` to a non-privileged port and forward port 53 to it. The DNS records it serves are managed through the Config UI and Configuration Manager, the same tools used for the rest of the HISP configuration.
+Two of the services default to binding a well-known low port and will likely need adjustment for a real deployment. The DNS Service listens on UDP/TCP port `53`, and the SMTP/MQ Gateway defaults to port `1025` but will normally need to run on port `25` when it is exposed directly to the internet as the HISP's primary path for receiving messages from other HISPs. Both `53` and `25` are privileged ports on most operating systems, so for each service either start it with sufficient privileges to bind low ports (run as `root`, or grant the Java executable the `CAP_NET_BIND_SERVICE` capability on Linux), or set its binding port property (`direct.dns.binding.port` / `direct.smtpmqgateway.binding.port`) to a non-privileged port and forward the well-known port to it.
+
+The DNS records the DNS Service serves are managed through the Config UI and Configuration Manager, the same tools used for the rest of the HISP configuration.
 
 ### Adding External Jars to a Service's Classpath (e.g., PKCS11 Providers)
 
