@@ -20,11 +20,14 @@ The following is the list of micro-services making up the core of the reference 
 
 * Configuration Service
 * Configuration UI
+* DNS Service
 * Message Monitor
 * SMTP/MQ Gateway
 * Security and Trust Agent
 * Apache James (for message sending/retrieving and last-mile delivery only)
 * XD
+
+The DNS Service is a lightweight, authoritative-only DNS server that publishes the DNS records — most importantly the CERT records used for Direct certificate discovery — managed in the Configuration Service. It reads those records from the Configuration Service's REST API and answers DNS queries over UDP/TCP. Unlike the other micro-services it does not participate in the RabbitMQ messaging pipeline, so it is not shown in the topology diagram below; it typically sits in the public network so that external HISPs and mail servers can resolve the certificate and MX records for your domains.
 
 ## Topology Overview
 
@@ -53,6 +56,7 @@ The following list outlines each micro-service, the jar file that comprises it (
 | :---         | :---           | :---          |
 | Config Service    | [config-service.jar](https://repo.maven.apache.org/maven2/org/nhind/config-service/9.0.0/config-service-9.0.0.jar) | Holds the configuration service for the HISP, such as domains, DNS entries, trust bundles, and certificates. |
 | Config UI         | [config-ui.war](https://repo.maven.apache.org/maven2/org/nhind/config-ui/9.0.0/config-ui-9.0.0.war) | Front-end web UI application to configure the HISP, including domains, DNS entries, trust bundles, and certificates. |
+| DNS Service       | [dns-sboot-9.0.0.jar](https://repo.maven.apache.org/maven2/org/nhind/dns-sboot/9.0.0/dns-sboot-9.0.0.jar) | Authoritative-only DNS server that answers DNS queries — most importantly CERT record queries used for Direct certificate discovery — from the DNS and certificate records held in the Configuration Service. Reads records from the Configuration Service REST API; it does not use the message broker. |
 | Message Monitor   | [direct-msg-monitor-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-msg-monitor-sboot/9.0.0/direct-msg-monitor-sboot-9.0.0.jar) | Tracks the status of Direct message notifications and generates error messages if required notifications are not received. Notification statuses are sent from other micro-services (STA and James) via the message broker (e.g., RabbitMQ). |
 | SMTP/MQ Gateway   | [direct-smtp-mq-gateway.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-smtp-mq-gateway/9.0.0/direct-smtp-mq-gateway-9.0.0.jar) | Externally facing SMTP server intended to receive Direct messages from external HISPs. It forwards Direct messages into the message processing stream via the system's message broker. **NOTE:** This SMTP server does not provide commercial capabilities such as anti-spam filters or malware detection. If you need those capabilities to control incoming messages, consider fronting this SMTP server with a commercial one. |
 | Security and Trust Agent | [direct-sta-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-sta-sboot/9.0.0/direct-sta-sboot-9.0.0.jar) | Executes the main security and trust agent logic as defined by the Direct specification. Also handles XD step processing and forwards processed messages to either external HISPs or an internal final destination, depending on the sender and receiver of the messages. Internal final destinations are either the James server application or XD endpoints. |
@@ -82,10 +86,11 @@ Obtain each jar/war file from Maven and place each into its own directory on you
 | :---         | :---           | :---          |
 | Config Service    | [config-service.jar](https://repo.maven.apache.org/maven2/org/nhind/config-service/9.0.0/config-service-9.0.0.jar) | `config-service`  |
 | Config UI         | [config-ui.war](https://repo.maven.apache.org/maven2/org/nhind/config-ui/9.0.0/config-ui-9.0.0.war) | `config-ui`  |
+| DNS Service       | [dns-sboot-9.0.0.jar](https://repo.maven.apache.org/maven2/org/nhind/dns-sboot/9.0.0/dns-sboot-9.0.0.jar) | `dns` |
 | Message Monitor   | [direct-msg-monitor-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-msg-monitor-sboot/9.0.0/direct-msg-monitor-sboot-9.0.0.jar) | `message-monitor` |
 | SMTP/MQ Gateway   | [direct-smtp-mq-gateway.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-smtp-mq-gateway/9.0.0/direct-smtp-mq-gateway-9.0.0.jar) | `smtp-gateway`  |
 | Security and Trust Agent | [direct-sta-sboot.jar](https://repo.maven.apache.org/maven2/org/nhind/direct-sta-sboot/9.0.0/direct-sta-sboot-9.0.0.jar) | `sta` |
-| Apache James      | [direct-james-server](https://repo.maven.apache.org/maven2/org/nhind/direct-james-server/9.0.0/direct-james-server-9.0.0.jar) | `james` |
+| James             | [direct-james-server](https://repo.maven.apache.org/maven2/org/nhind/direct-james-server/9.0.0/direct-james-server-9.0.0.jar) | `james` |
 | XD                | [xd.war](https://repo.maven.apache.org/maven2/org/nhind/xd/9.0.0/xd-9.0.0.war) | `xd` |
 
 ## Launch Microservices
@@ -264,6 +269,8 @@ each directory. If you need to debug the output interactively, you can run `./se
 
 Once the services are up and running, you can perform a preliminary test to confirm the system is working by accessing the Config UI at `http://<server IP>:8080/`.
 
+The DNS Service listens on UDP/TCP port `53` by default, which is a privileged port on most operating systems. Either start it with sufficient privileges to bind low ports (run as `root`, or grant the Java executable the `CAP_NET_BIND_SERVICE` capability on Linux), or set `direct.dns.binding.port` to a non-privileged port and forward port 53 to it. The DNS records it serves are managed through the Config UI and Configuration Manager, the same tools used for the rest of the HISP configuration.
+
 ### Adding External Jars to a Service's Classpath (e.g., PKCS11 Providers)
 
 Each micro-service jar/war is a Spring Boot fat archive launched via a `Main-Class` of `org.springframework.boot.loader.launch.JarLauncher` (or `WarLauncher` for Config UI) — you can confirm this by inspecting the `META-INF/MANIFEST.MF` inside the archive. This launcher only loads classes bundled inside the archive itself (under `BOOT-INF/lib` or `WEB-INF/lib`); unlike the legacy Tomcat model, there is no directory you can drop an extra jar into and have `java -jar <binary>` pick it up automatically. Common database drivers (MySQL, PostgreSQL) are already bundled where needed, so this normally isn't a concern. However, some scenarios require adding a jar that can't be bundled at build time — most notably a hardware vendor's proprietary PKCS11 JCE provider jar for [Enhanced Private Key Security](enhanced-key-security).
@@ -354,6 +361,18 @@ internal library JARs on the service's classpath, so they won't be visible just 
 | direct.config.keystore.privateKeyPassPhrase | Passphrase protecting private keys in the software (non-HSM) keystore. **Change this for any real deployment.** | `H1TCh1ckS!` |
 | direct.config.keystore.initOnStart | Whether to initialize the keystore/HSM token store on application startup. | `true` |
 | direct.config.keystore.{keyStorePin, keyStoreType, keyStoreSourceAsString, keyStoreProviderName, keyStorePassPhraseAlias, privateKeyPassPhraseAlias} | Additional PKCS#11 HSM connection settings, only used when `hsmpresent=true`. | `som3randomp!n`<br>`Luna`<br>`slot:0`<br>`com.safenetinc.luna.provider.LunaProvider`<br>`keyStorePassPhrase`<br>`privateKeyPassPhrase` |
+
+### DNS Service
+
+| Name | Description | Default Value |
+| :---         | :---           | :---          |
+| direct.webservices.security.basic.user.name     | Basic auth user name to access the configuration service API. | `admin` |
+| direct.webservices.security.basic.user.password | Basic auth password to access the configuration service API. | `d1r3ct;` |
+| direct.config.service.url                       | URL of the configuration service API. | `http://localhost:8082/` |
+| direct.dns.binding.port    | UDP/TCP port the DNS server listens on for incoming DNS queries. Port 53 is privileged on most systems — see the note in [Launch Microservices](#launch-microservices). | `53` |
+| direct.dns.binding.address | Local IP address the DNS server binds to. By default it binds to all interfaces. | `0.0.0.0` |
+| direct.dns.binding.maxReconnectAttempts | Number of times the server attempts to re-bind its listener socket after an I/O failure before giving up. | `10` |
+| direct.dns.certPolicyName  | Name of a certificate policy (defined in the Configuration Service) used to filter CERT record query responses — typically used for single-use certificate deployments. When empty or unresolvable, no filtering is applied. | *(empty — no filtering)* |
 
 ### Message Monitor
 
