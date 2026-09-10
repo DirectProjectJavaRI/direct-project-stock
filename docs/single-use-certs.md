@@ -52,7 +52,7 @@ Create a file named DigitalSig.pol and add the following line to the file:
 
 Now you need to import the policy file into your system and associate it with a domain. To import and configure policies, you will use a command-line configuration management tool. Which tool you use depends on your deployment model — the commands themselves are identical between the two, only the tool you launch differs:
 
-* **Cloud Native deployment model:** Use the Configuration Manager tool. See [Configuration Manager Tool](cloud-native-deployment#configuration-manager-tool) for where to download it and how to run it (`java -jar config-manager-9.0.0.jar`).
+* **Cloud Native deployment model:** Use the Configuration Manager tool. See [Configuration Manager Tool](configuration-manager) for where to download it and how to run it (`java -jar config-manager-9.0.0.jar`).
 * **Legacy deployment model:** Use the ConfigMgmtConsole tool found in the `<DIRECTHOME>`/ConfigMgmtConsole directory. Launch a command prompt, navigate to the tool's directory, and run the following command to launch the tool:
 
   *Windows*

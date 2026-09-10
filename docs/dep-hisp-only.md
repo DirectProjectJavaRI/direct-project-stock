@@ -18,6 +18,7 @@ Version 9.0 is a major technology update, replacing many implementations and bre
   * Per-address configuration for routing to XD endpoints (versus a single global setting for one and only one XD endpoint)
   * Updated step-up and step-down XDM and XDR conversion in line with ONC certification libraries
   * Support for notification messages in line with the latest Direct Project XD implementation guides
+* Created OCI images for all micro-services (hosted on DockerHub) and created a new direct-project-k8s for deploying to Kubernetes.
 
 ## Major Updates in Version 8.1+
 
