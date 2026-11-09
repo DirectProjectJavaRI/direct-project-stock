@@ -202,14 +202,9 @@ Services console, consider wrapping `java -jar <binary> ...` with a tool such as
 </configuration>
 ```
 
-This configuration intentionally has no console appender. The launch scripts redirect the process's stdout/stderr to `./logs/console.out`, which is never rotated, so also logging to the console
-would duplicate every log line into a file that grows without limit. Instead, `./logs/service.log` is the single log: it rolls daily, keeps 30 days of history, and is capped at 1GB in total.
-`console.out` (or `console.err` on Windows) will only contain output that bypasses logback, such as the startup banner and JVM crash messages. To follow the logs live, use `tail -f ./logs/service.log`
-(or `Get-Content .\logs\service.log -Wait` in PowerShell).
-
 
 Finally, launch each micro-service. The order mostly doesn't matter, except that `config-service` must be running first. To start the services, run `./service.sh start` (Unix) or `.\service.ps1 start` (Windows) from
-each directory. If you need to debug the output interactively, you can follow `./logs/service.log` as described above. Running `./service.sh console` or `.\service.ps1 console` runs the service in the foreground, but because there is no console appender it only shows startup output and anything that bypasses logback. To stop the service, simply run
+each directory. If you need to debug the output interactively, you can follow `./logs/service.log` (for example, `tail -f ./logs/service.log`). To stop the service, simply run
 `./service.sh stop` / `.\service.ps1 stop`, or press `CTRL+C` if running interactively.
 
 Once the services are up and running, you can perform a preliminary test to confirm the system is working by accessing the Config UI at `http://<server IP>:8080/`.
